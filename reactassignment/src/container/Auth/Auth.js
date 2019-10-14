@@ -1,5 +1,7 @@
 import React,{Component} from 'react';
 import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 class Auth extends Component{
     state={
@@ -7,11 +9,9 @@ class Auth extends Component{
             email:"",
             password:"",
             fullName:"",
-            isSignUp:true
-        }
-       
-
-    }
+        },
+        isSignUp:true
+      }
 
     changeHandler=(event,name)=>{
         let form = { ...this.state.form }
@@ -19,6 +19,17 @@ class Auth extends Component{
         form[name] = event.target.value;
         this.setState({ form });
     }
+
+    submitHandler = ( event ) => {
+      event.preventDefault();
+      this.props.onAuth( this.state.form.email, this.state.form.password, this.state.isSignup );
+  }
+
+  switchAuthModeHandler = () => {
+      this.setState( prevState => {
+          return { isSignup: !prevState.isSignup };
+      } );
+  }
 
     render(){
 
@@ -54,9 +65,7 @@ class Auth extends Component{
                         onChange={this.changeHandler(event,this.name)}
                     />
           
-                    <Button color='teal' fluid size='large'>
-                      Login
-                    </Button>
+                    
                   </Segment>
                 </Form>
                 <Message>
@@ -66,16 +75,54 @@ class Auth extends Component{
             </Grid>
           )
           
+          if ( this.props.loading ) {
+            form = <Spinner />
+        }
+
+        let errorMessage = null;
+
+        if ( this.props.error ) {
+            errorMessage = (
+                <p>{this.props.error.message}</p>
+            );
+        }
+
+        let authRedirect = null;
+        if ( this.props.isAuthenticated ) {
+            authRedirect = <Redirect to={this.props.authRedirectPath} />
+        }
+
         return(
             <div>
-                <form>
+                <form onSubmit={this.submitHandler}>
                     {LoginForm}
-                    <Button>SUBMIT</Button>
+                    <Button color='teal' fluid size='large'>
+                      SUBMIT
+                    </Button>
                 </form>
+                <Button color='teal' fluid size='large' onClick={this.switchAuthModeHandler} >
+                      SWITCH TO {this.state.isSignUp ? "SIGN UP" : "SIGN IN"}
+                    </Button>
 
             </div>
         );
     }
-}
+  }
 
-export default Auth;
+  const mapStateToProps = state => {
+    return {
+        loading: state.auth.loading,
+        error: state.auth.error,
+        isAuthenticated: state.auth.token !== null,
+        authRedirectPath: state.auth.authRedirectPath
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onAuth: ( email, password, isSignup ) => dispatch( actions.auth( email, password, isSignup ) ),
+        onSetAuthRedirectPath: () => dispatch( actions.setAuthRedirectPath( '/' ) )
+    };
+};
+
+export default connect( mapStateToProps, mapDispatchToProps )( Auth );
