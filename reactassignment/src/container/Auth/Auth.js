@@ -49,7 +49,7 @@ class Auth extends Component {
             {/* Log-in to your account */}
           </Header>
           <Form size='large'>
-            <Segment stacked>
+            <Segment stacked> 
               
               
                   <Form.Input

@@ -12,7 +12,7 @@ import App from './App';
 //import registerServiceWorker from './registerServiceWorker';
 import authReducer from './store/reducer/auth';
 
-// const composeEnhancers = process.env.NODE_ENV === 'development' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null || compose;
+const composeEnhancers = compose;
 
 // const rootReducer = combineReducers({
 //     burgerBuilder: burgerBuilderReducer,
@@ -20,7 +20,7 @@ import authReducer from './store/reducer/auth';
 //     auth: authReducer
 // });
 
-const store = createStore(authReducer);
+const store = createStore(authReducer,composeEnhancers(applyMiddleware(thunk)));
 
 const app = (
     <Provider store={store}>

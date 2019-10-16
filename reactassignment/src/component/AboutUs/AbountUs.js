@@ -1,3 +1,5 @@
+import React from 'react';
+
 const aboutUs=(props)=>(
     <div>
           <p>About Us</p>  
