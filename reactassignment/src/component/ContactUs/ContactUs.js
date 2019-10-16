@@ -1,9 +1,10 @@
 import React from 'react';
+import { Container } from 'semantic-ui-react';
 
 const contactUs=(props)=>(
-    <div>
+    <Container>
           <p>Contact Us</p>  
-    </div>
+    </Container>
 );
 
 export default contactUs;

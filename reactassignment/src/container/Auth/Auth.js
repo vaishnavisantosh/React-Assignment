@@ -13,7 +13,7 @@ class Auth extends Component {
       password: "",
       fullName: ""
     },
-    isSignUp: true
+    isSignUp: false
   }
 
   changeHandler = (e) => {
@@ -32,7 +32,7 @@ class Auth extends Component {
 
   switchAuthModeHandler = () => {
     this.setState(prevState => {
-      return { isSignup: !prevState.isSignup };
+      return {isSignUp: !prevState.isSignUp };
     });
     console.log(`inside switchAuthhandler `);
   }
@@ -51,7 +51,9 @@ class Auth extends Component {
           <Form size='large'>
             <Segment stacked> 
               
-              
+              {
+
+              this.state.isSignUp ?
                   <Form.Input
                     fluid
                     icon='user'
@@ -61,8 +63,8 @@ class Auth extends Component {
                     name="fullName"
                     type="text"
                     onChange = {this.changeHandler}
-                  />
-              
+                  /> : null
+              }
               <Form.Input
                 fluid
                 icon='user'

@@ -60,7 +60,24 @@ export const auth = (email, password, isSignup) => {
                 localStorage.setItem('userId', response.data.localId);
                 dispatch(authSuccess(response.data.idToken, response.data.localId));
                 dispatch(checkAuthTimeout(response.data.expiresIn));
+                let url = "https://cms-react-af25a.firebaseio.com/users/" + response.data.localId + ".json"
+                if (isSignup) {
+                    authData.userType = "USER";
+                    let userDetails = {
+                        fullName: authData.fullName,
+                        // userType: "USER",
+                        user_email: authData.email,
+                        created_on: new Date().getTime() / 1000,
+                        // updated_on: new Date().getTime() / 1000
+                    }
+                    return axios.put(url, userDetails)
+                }
+                return axios.get(url)
+            }).then(response => {
+                localStorage.setItem('fullName', response.data.fullName);
+                localStorage.setItem('userType', response.data.userType);
             })
+        
             .catch(err => {
                 dispatch(authFail(err.response.data.error));
             });

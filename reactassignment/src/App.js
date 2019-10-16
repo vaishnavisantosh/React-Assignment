@@ -42,8 +42,8 @@ class App extends Component {
           <Route path="/dashboard" component={Dashboard} />
           <Route path="/logout" component={Logout} />
           <Route path="/auth" component={Auth} />
-          <Route path="/aboutUs" exact component={AboutUs} />
-          <Route path="/contactUs" component={ContactUs}></Route>
+          <Route exact path="/aboutUs" exact component={AboutUs} />
+          <Route exact path="/contactUs" component={ContactUs}></Route>
           {/* <Redirect to="/" /> */}
         </Switch>
       );
@@ -51,9 +51,10 @@ class App extends Component {
 
     return (
       <div>
-        <Layout>
+        <Layout />
+
           {routes}
-        </Layout>
+        {/* </Layout> */}
       </div>
     );
   }

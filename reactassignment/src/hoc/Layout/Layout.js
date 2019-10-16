@@ -14,9 +14,9 @@ class Layout extends Component {
                 <Toolbar
                     isAuth={this.props.isAuthenticated}/>
                 
-                <main className={classes.Content}>
+                {/* <main className={classes.Content}>
                     {this.props.children}
-                </main>
+                </main> */}
 
            {/* <Menu
               fixed="top"
