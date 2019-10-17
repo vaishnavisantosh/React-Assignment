@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-
+import NewPost from './container/Dashboard/Post/NewPost'
 
 import Layout from './hoc/Layout/Layout';
 
@@ -37,11 +37,14 @@ class App extends Component {
     );
 
     if ( this.props.isAuthenticated ) {
+      let userId=localStorage.getItem('userId');
+      console.log(userId);
       routes = (
         <Switch>
           <Route path="/dashboard" component={Dashboard} />
           <Route path="/logout" component={Logout} />
           <Route path="/auth" component={Auth} />
+          <Route path="/newPost" component={NewPost}/>
           <Route exact path="/aboutUs" exact component={AboutUs} />
           <Route exact path="/contactUs" component={ContactUs}></Route>
           {/* <Redirect to="/" /> */}

@@ -18,9 +18,9 @@ class Auth extends Component {
 
   changeHandler = (e) => {
     let form = { ...this.state.form }
-   console.log(e.target.name);
+   //console.log(e.target.name);
     form[e.target.name] = e.target.value;
-    console.log(e.target.value);
+    //console.log(e.target.value);
 
     this.setState({ form });
   }

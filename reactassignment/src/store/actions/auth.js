@@ -72,10 +72,15 @@ export const auth = (email, password, isSignUp) => {
                         created_on: new Date().getTime() / 1000,
                         // updated_on: new Date().getTime() / 1000
                     }
+                    console.log("above put");
                     return axios.put(url, userDetails)
+                    console.log("after put")
                 }
+                console.log("before get");
                 return axios.get(url)
+                console.log("after get")
             }).then(response => {
+                console.log("last response")
                 localStorage.setItem('fullName', response.data.fullName);
                 localStorage.setItem('userType', response.data.userType);
             })
