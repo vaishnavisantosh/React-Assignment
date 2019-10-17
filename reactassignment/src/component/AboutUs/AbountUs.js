@@ -5,5 +5,6 @@ const aboutUs=(props)=>(
           <p>About Us</p>  
     </div>
 );
+    
 
 export default aboutUs;

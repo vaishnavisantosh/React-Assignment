@@ -40,6 +40,8 @@ class Auth extends Component {
   render() {
 
     let { email, password, fullName } = this.state.form;
+    const buttonTitle = this.state.isSignup ? "Sign Up" : "Sign In";
+        const switchButtonTitle = this.state.isSignup ? "Sign in" : "Sign up";
 
     let LoginForm = 
       <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
@@ -85,12 +87,15 @@ class Auth extends Component {
                 value={password}
                 onChange={this.changeHandler}
               />
-
+              <Button color='teal' fluid size='large'>
+                                {buttonTitle}
+                            </Button>
 
             </Segment>
           </Form>
           <Message>
-            New to us? <a href='#' onClick={this.switchAuthModeHandler}>Sign Up</a>:
+        
+          {this.state.isSignup ? "" : "New to us?"} <a href='#' onClick={this.switchAuthModeHandler}>{switchButtonTitle}</a>:
           </Message>
         </Grid.Column>
       </Grid>
@@ -115,15 +120,7 @@ class Auth extends Component {
 
     return (
       <div>
-        {/* <form onSubmit={this.submitHandler}>
-          {LoginForm}
-          <Button color='teal' fluid size='large'>
-            SUBMIT
-                    </Button>
-        </form>
-        <Button color='teal' fluid size='large' onClick={this.switchAuthModeHandler} >
-          SWITCH TO {this.state.isSignUp ? "SIGN UP" : "SIGN IN"}
-        </Button> */}
+        
         {LoginForm}
 
       </div>
