@@ -40,7 +40,7 @@ export const checkAuthTimeout = (expirationTime) => {
     };
 };
 
-export const auth = (email, password, isSignup) => {
+export const auth = (email, password, isSignUp) => {
     return dispatch => {
         dispatch(authStart());
         const authData = {
@@ -48,10 +48,12 @@ export const auth = (email, password, isSignup) => {
             password: password,
             returnSecureToken: true
         };
-        let url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithCustomToken?key=AIzaSyCrovdUsDuQ8z4C2_cYLtHpDgS8S0Vabrk';
-        if (!isSignup) {
+
+        let url = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyCrovdUsDuQ8z4C2_cYLtHpDgS8S0Vabrk';
+        if (!isSignUp) {
             url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCrovdUsDuQ8z4C2_cYLtHpDgS8S0Vabrk';
         }
+        alert(url);
         axios.post(url, authData)
             .then(response => {
                 const expirationDate = new Date(new Date().getTime() + response.data.expiresIn * 1000);
@@ -60,8 +62,8 @@ export const auth = (email, password, isSignup) => {
                 localStorage.setItem('userId', response.data.localId);
                 dispatch(authSuccess(response.data.idToken, response.data.localId));
                 dispatch(checkAuthTimeout(response.data.expiresIn));
-                let url = "https://cms-react-af25a.firebaseio.com/users/" + response.data.localId + ".json"
-                if (isSignup) {
+                let url = "https://cms-react-af25a.firebaseio.com/users/" +response.data.localId + ".json"
+                if (isSignUp) {
                     authData.userType = "USER";
                     let userDetails = {
                         fullName: authData.fullName,

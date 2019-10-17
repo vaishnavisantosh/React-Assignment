@@ -13,7 +13,7 @@ class Auth extends Component {
       password: "",
       fullName: ""
     },
-    isSignUp: false
+    isSignUp: true
   }
 
   changeHandler = (e) => {
@@ -27,10 +27,12 @@ class Auth extends Component {
 
   submitHandler = (event) => {
     event.preventDefault();
-    this.props.onAuth(this.state.form.email, this.state.form.password, this.state.isSignup);
+    
+    this.props.onAuth(this.state.form.email, this.state.form.password, this.state.isSignUp);
   }
 
-  switchAuthModeHandler = () => {
+  switchAuthModeHandler = (e) => {
+    e.preventDefault();
     this.setState(prevState => {
       return {isSignUp: !prevState.isSignUp };
     });
@@ -40,8 +42,8 @@ class Auth extends Component {
   render() {
 
     let { email, password, fullName } = this.state.form;
-    const buttonTitle = this.state.isSignup ? "Sign Up" : "Sign In";
-        const switchButtonTitle = this.state.isSignup ? "Sign in" : "Sign up";
+    const buttonTitle = this.state.isSignUp ? "Sign Up" : "Sign In";
+        const switchButtonTitle = this.state.isSignUp ? "Sign IN" : "Sign Up";
 
     let LoginForm = 
       <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
@@ -50,7 +52,7 @@ class Auth extends Component {
             {/* <Image src='/logo.png' />  */}
             {/* Log-in to your account */}
           </Header>
-          <Form size='large'>
+          <Form size='large' onSubmit={this.submitHandler}>
             <Segment stacked> 
               
               {
@@ -95,7 +97,7 @@ class Auth extends Component {
           </Form>
           <Message>
         
-          {this.state.isSignup ? "" : "New to us?"} <a href='#' onClick={this.switchAuthModeHandler}>{switchButtonTitle}</a>:
+          {this.state.isSignUp ? "" : "New to us?"} <a href='#' onClick={this.switchAuthModeHandler}>{switchButtonTitle}</a>:
           </Message>
         </Grid.Column>
       </Grid>
@@ -139,7 +141,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onAuth: (email, password, isSignup) => dispatch(actions.auth(email, password, isSignup)),
+    onAuth: (email, password, isSignUp) => dispatch(actions.auth(email, password, isSignUp)),
     onSetAuthRedirectPath: () => dispatch(actions.setAuthRedirectPath('/'))
   };
 };
