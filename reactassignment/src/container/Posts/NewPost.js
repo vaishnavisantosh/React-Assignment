@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Form, Grid, Header, Message, Segment, Container,Radio } from 'semantic-ui-react';
 import { connect } from 'react-redux';
-import * as actions from '../../../store/actions/index';
+import * as actions from '../../store/actions/index';
 // Require Editor JS files.
 import 'froala-editor/js/froala_editor.pkgd.min.js';
 
@@ -25,25 +25,24 @@ class NewPost extends Component {
     state = {
         title: '',
         description: '',
-        status: '',
-        createdDate: '',
-        updatedDate: ''
+        status: 'Draft',
+       
     }
 
     handleModelChange(content) {
         this.setState({ description: content });
     }
 
-    changeHandler = (e) => {
-        let form = { ...this.state }
-        //console.log(e.target.name);
-        this.setState(form[e.target.name] = e.target.value);
+    changeTitleHandler = (e) => {
+        
+        this.setState( {title:e.target.value});
         //console.log(e.target.value);
     }
+    
     submitHandler = (event) => {
-        // event.preventDefault();
-        
-        // this.props.onCreatePost(this.state.title, this.state.form.description, this.state.status);
+        event.preventDefault();
+        let userId=this.props.id;
+         this.props.onPost(this.state.title, this.state.description, this.state.status,userId);
         console.log("inside submit");
       }
 
@@ -54,15 +53,13 @@ class NewPost extends Component {
 
 
         return (
-
-
-            <Form onSubmit={this.submitHandler}>
+        <Form onSubmit={this.submitHandler}>
                 <Form.Input
                     fluid
                     placeholder='Title'
                     value={title}
                     name="title"
-                    onChange={this.changeHandler}
+                    onChange={this.changeTitleHandler}
                 />
                 <FroalaEditor
                     //model={null}
@@ -96,21 +93,17 @@ class NewPost extends Component {
     }
 }
 
-// const mapStateToProps = state => {
-//     return
-//     {
-//         UserId: state.UserId
-//     };
-// };
-
-// const mapDispatchToProps = dispatch => {
-//     return
-//     {
-//         onCreatePost:()=>dispatch();
-
-
-//     }
-// };
+const mapStateToProps = state => {
+    return {
+     id:state.auth.userId
+    };
+  };
+  
+  const mapDispatchToProps = dispatch => {
+    return {
+      onPost: (title, description,status,id) => dispatch(actions.post(title, description, status,id)),
+    };
+  };
 
 
 
@@ -119,4 +112,4 @@ class NewPost extends Component {
 
 
 
-export default NewPost;
+export default connect(mapStateToProps,mapDispatchToProps) (NewPost);

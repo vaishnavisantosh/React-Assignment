@@ -1,22 +1,22 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+//import { Link } from 'react-router-dom';
 import classes from './Layout.css';
 import Toolbar from '../../component/Navigation/Toolbar/Toolbar';
-import { Menu, Container, Button } from 'semantic-ui-react';
+//import { Menu, Container, Button } from 'semantic-ui-react';
 
 
 class Layout extends Component {
-    navItems = [ { title: 'home', to:'/' }, ];
+   
     render () {
         return (
             <>
                 <Toolbar
                     isAuth={this.props.isAuthenticated}/>
                 
-                {/* <main className={classes.Content}>
+                <main className={classes.Content}>
                     {this.props.children}
-                </main> */}
+                </main>
 
            {/* <Menu
               fixed="top"
@@ -49,7 +49,7 @@ class Layout extends Component {
 
 const mapStateToProps = state => {
     return {
-        isAuthenticated: state.token !== null
+        isAuthenticated: state.auth.token !== null
     };
 };
 

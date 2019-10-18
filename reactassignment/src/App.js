@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import NewPost from './container/Dashboard/Post/NewPost'
+import NewPost from './container/Posts/NewPost'
 
 import Layout from './hoc/Layout/Layout';
 
 import Logout from './container/Auth/Logout/Logout';
 import * as actions from './store/actions/index';
-import Dashboard from './container/Dashboard/Dashboard';
+import posts from './container/Posts/Post';
 import Auth from './container/Auth/Auth';
 import AboutUs from './component/AboutUs/AbountUs';
 import ContactUs from './component/ContactUs/ContactUs';
@@ -27,11 +27,12 @@ class App extends Component {
   }
 
   render () {
+    
     let routes = (
       <Switch>
         <Route path="/auth" component={Auth} />
         <Route path="/aboutUs" exact component={AboutUs} />
-        <Route path="/contactUs" exact component={ContactUs} ></Route>
+        <Route path="/contactUs" exact component={ContactUs} />
         {/* <Redirect to="/" /> */}
       </Switch>
     );
@@ -41,10 +42,11 @@ class App extends Component {
       console.log(userId);
       routes = (
         <Switch>
-          <Route path="/dashboard" component={Dashboard} />
           <Route path="/logout" component={Logout} />
           <Route path="/auth" component={Auth} />
-          <Route path="/newPost" component={NewPost}/>
+          <Route path="/posts/newPost"  component={NewPost}/>
+          <Route path="/posts" component={posts} />
+
           <Route exact path="/aboutUs" exact component={AboutUs} />
           <Route exact path="/contactUs" component={ContactUs}></Route>
           {/* <Redirect to="/" /> */}
@@ -54,10 +56,10 @@ class App extends Component {
 
     return (
       <div>
-        <Layout />
+        <Layout  >
 
           {routes}
-        {/* </Layout> */}
+        </Layout>
       </div>
     );
   }
@@ -65,7 +67,7 @@ class App extends Component {
 
 const mapStateToProps = state => {
   return {
-    isAuthenticated: state.token !== null
+    isAuthenticated: state.auth.token !== null
   };
 };
 

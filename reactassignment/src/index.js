@@ -11,16 +11,18 @@ import './index.css';
 import App from './App';
 //import registerServiceWorker from './registerServiceWorker';
 import authReducer from './store/reducer/auth';
+import postReducer from './store/reducer/post';
 
 const composeEnhancers = compose;
 
-// const rootReducer = combineReducers({
-//     burgerBuilder: burgerBuilderReducer,
-//     order: orderReducer,
-//     auth: authReducer
-// });
+const rootReducer = combineReducers({
+    auth: authReducer,
+    post:postReducer
+});
 
-const store = createStore(authReducer,composeEnhancers(applyMiddleware(thunk)));
+const store = createStore(rootReducer, composeEnhancers(
+    applyMiddleware(thunk)
+));
 
 const app = (
     <Provider store={store}>
