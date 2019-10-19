@@ -1,17 +1,42 @@
-import React from 'react'
-import { Card, Icon } from 'semantic-ui-react'
-import { NavLink } from 'react-router-dom';
+import React , {Component} from 'react'
+import { Card, Icon,Button,Confirm } from 'semantic-ui-react'
+import Axios from '../../axios-orders';
+//import { NavLink } from 'react-router-dom';
 
 //import moment from "moment"
 
-const posts = (props) => {
+class Posts extends Component {
+
+    // state={
+    //     open: false
+    // }
+
+    
+
+    handleConfirm = () =>{
+        console.log("key");     
+        console.log(this.props.id);
+        Axios.delete(`/posts/${this.props.id}.json`)
+        .then(response=>{
+            console.log("inside response",response)});
+        // }).then(
+        // this.setState({open:false}));
+        // }
+    //handleCancel = () => this.setState({  open: false })
+    //show = () => this.setState({ open: true })
+        }
+
+
+
+
+render(){
     
     return (
         <Card.Group>
-            {props.posts.map(post => {
-                //let updatedDate = moment(moment.utc(new Date(post.updated_on * 1000)), "YYYYMMDD").fromNow();
-                return (
-                    <Card key={post.Id}>
+            
+                {/* //let updatedDate = moment(moment.utc(new Date(post.updated_on * 1000)), "YYYYMMDD").fromNow(); */}
+
+                    <Card >
                         <Card.Content>
                             {/* <NavLink
                                 style={{ display: "inline-block" }}
@@ -21,10 +46,22 @@ const posts = (props) => {
                                 </Card.Header>
                             </NavLink> */}
                             <Card.Meta>
-                                <span>{post.Author}</span>
+                                <span>{this.props.title}</span>
                             </Card.Meta>
-                            <Card.Description content={post.Description} />
+                            <Card.Description content={this.props.description} />
+                            <Card.Meta>
+                                <span>{this.props.status}</span>
+                            </Card.Meta>
+
+                            <Card.Meta>
+                                <span>{this.props.createdDate}</span>
+                            </Card.Meta>
+                            <Card.Meta>
+                                <span>{this.props.updatedDate}</span>
+                            </Card.Meta>
                         </Card.Content>
+                        <Button key={this.props.key} onClick={this.handleConfirm}>Delete</Button>
+        
                         {/* <Card.Content extra>
                             {/* <ConfirmationModal
                                 iconType="remove circle"
@@ -36,15 +73,16 @@ const posts = (props) => {
                               {/* <NavLink
                                 style={{ display: "inline-block" }}
                                 to={nextPage}> */}
-                                <Icon name='edit outline' size="large" />
+                                {/* <Icon name='edit outline' size="large" /> */}
                             {/* </NavLink>  */}
                             {/* <span style={{ float: "right" }}>{updatedDate}</span>
-                        </Card.Content> */}  */}
+                        </Card.Content> */}  
                     </Card>
-                )
-            })}
+                
+          
         </Card.Group>
     )
 }
+}
 
-export default posts;
+export default Posts;

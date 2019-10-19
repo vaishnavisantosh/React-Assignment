@@ -24,6 +24,8 @@ const store = createStore(rootReducer, composeEnhancers(
     applyMiddleware(thunk)
 ));
 
+window.myStore = store;
+
 const app = (
     <Provider store={store}>
         <BrowserRouter>

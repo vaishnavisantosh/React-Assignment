@@ -24,14 +24,15 @@ export const orderFail = (error) => {
 };
 
 
-export const post = (title, description, status,userId) => {
+export const post = (title, description, status,userId,token) => {
     return dispatch => {
         dispatch(orderStart());
         const postData = {
             title: title,
             description: description,
             status: status,
-            userId:userId,
+            tokenId:userId,
+            token:token,
             createdDate:new Date().getTime() / 1000,
             updatedDate:new Date().getTime() / 1000
 
@@ -56,7 +57,7 @@ export const post = (title, description, status,userId) => {
 export const fetchPostSuccess = ( orders ) => {
     return {
         type: actionTypes.FETCH_ORDERS_SUCCESS,
-        orders: orders
+        posts: orders
     };
 };
 
@@ -73,14 +74,18 @@ export const fetchPostStart = () => {
     };
 };
 
-export const fetchPost = (token,userId) => {
+export const fetchPost = (userId,tokenId) => {
     
 
     return dispatch => {
         dispatch(fetchPostStart());
-        const queryParams = '?auth=' + token + '&orderBy="tokenId"&equalTo="' + userId+ '';
+        // alert('?auth=' + tokenId + '&orderBy="tokenId"&equalTo="' + userId+ '');
+        const queryParams = '?auth=' + tokenId + '&orderBy="tokenId"&equalTo="'+userId+'"';
+        //console.log('===========================/posts.json'+ queryParams);
+        
         axios.get( '/posts.json'+ queryParams)
             .then( res => {
+                console.log(res);
                 const fetchedOrders = [];
                 for ( let key in res.data ) {
                     fetchedOrders.push( {
@@ -88,6 +93,7 @@ export const fetchPost = (token,userId) => {
                         id: key
                     } );
                 }
+                
                 dispatch(fetchPostSuccess(fetchedOrders));
             } )
             .catch( err => {
