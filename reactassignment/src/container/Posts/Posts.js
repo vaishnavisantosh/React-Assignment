@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-//import {Pagination} from 'semantic-ui-react';
+import {Pagination,Table,Button,Icon} from 'semantic-ui-react';
 
 import Post from '../../component/Post/Post';
 import axios from '../../axios-orders';
-//import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import * as actions from '../../store/actions/index';
 import Spinner from '../../component/UI/Spinner/Spinner';
 
-class Orders extends Component {
+
+
+class Posts extends Component {
 
     
 
     state = {
-        //posts:this.state.posts,
         page: 2,
         itemsPerPage: 10,
       };
@@ -32,14 +32,16 @@ class Orders extends Component {
     render () {
         let arr=[];
          arr=this.props.posts;
+
+
         
-        const itemsPerPage = 10;
-    let page= this.state.page;
-    let totalPages = arr / itemsPerPage;
-    let posts = arr.slice(
-      (page - 1) * itemsPerPage,
-      (page - 1) * itemsPerPage + itemsPerPage
-    );
+    //     const itemsPerPage = 10;
+    // let page= this.state.page;
+    // let totalPages = 100 / itemsPerPage;
+    // let posts = this.arr.slice(
+    //   (page - 1) * itemsPerPage,
+    //   (page - 1) * itemsPerPage + itemsPerPage
+    // );
         console.log("inside container");
         console.log(this.props.posts)
 
@@ -62,16 +64,48 @@ class Orders extends Component {
                     />
             ) )
         
-          
-
-           // console.log({post});
-       }
+}
         return (
             
            // console.log(this.props.posts)
 
             <div>
-                {post}
+                 <Button floated='right' icon labelPosition='left' primary size='small'>
+            <Icon name='user' /> Add Post
+          </Button>
+          
+  <Table compact celled definition>
+    <Table.Header>
+      <Table.Row>
+        
+        <Table.HeaderCell>Title</Table.HeaderCell>
+        <Table.HeaderCell>status</Table.HeaderCell>
+        <Table.HeaderCell>Created Date</Table.HeaderCell>
+        <Table.HeaderCell>Actions</Table.HeaderCell>
+      </Table.Row>
+    </Table.Header>
+
+    <Table.Body>
+   {   
+    post =  arr.map( order => (
+                <Post
+                   key={order.id}
+                   title={order.title}
+                   description={order.description}
+                   status={order.status}
+                   createdDate={order.createdDate}
+                   updatedDate={order.updatedDate}
+                   id={order.id}
+                    />
+            ) )
+        
+   } 
+    </Table.Body>
+
+    
+  </Table>
+  
+            
                 {/* <Pagination
           activePage={page}
           totalPages={totalPages}
@@ -100,5 +134,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect( mapStateToProps, mapDispatchToProps )( Orders, axios ) ;
-
+export default connect( mapStateToProps, mapDispatchToProps )( Posts, axios ) ;
