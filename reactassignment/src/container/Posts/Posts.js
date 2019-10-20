@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+//import {Pagination} from 'semantic-ui-react';
 
-import Post from '../../component/Post/Posts';
+import Post from '../../component/Post/Post';
 import axios from '../../axios-orders';
 //import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import * as actions from '../../store/actions/index';
@@ -10,6 +11,13 @@ import Spinner from '../../component/UI/Spinner/Spinner';
 class Orders extends Component {
 
     
+
+    state = {
+        //posts:this.state.posts,
+        page: 2,
+        itemsPerPage: 10,
+      };
+    
     componentDidMount () {
         const userId = this.props.userId;
         const tokenId = localStorage.getItem('token');
@@ -17,15 +25,31 @@ class Orders extends Component {
         this.props.onFetchPost(userId,tokenId);
     }
 
+    
+    setPageNum = (event, { activePage }) => {
+        this.setState({ page: activePage });
+      };
     render () {
+        let arr=[];
+         arr=this.props.posts;
+        
+        const itemsPerPage = 10;
+    let page= this.state.page;
+    let totalPages = arr / itemsPerPage;
+    let posts = arr.slice(
+      (page - 1) * itemsPerPage,
+      (page - 1) * itemsPerPage + itemsPerPage
+    );
         console.log("inside container");
         console.log(this.props.posts)
 
-        //console.log(this.props.posts)
+        //console.log(this.props.post
         let post = <Spinner />;
         if ( !this.props.loading ) {
-            let arr=this.props.posts;
+            
             console.log("post data",arr);
+        
+            
             post =  arr.map( order => (
                 <Post
                    key={order.id}
@@ -37,6 +61,8 @@ class Orders extends Component {
                    id={order.id}
                     />
             ) )
+        
+          
 
            // console.log({post});
        }
@@ -46,6 +72,14 @@ class Orders extends Component {
 
             <div>
                 {post}
+                {/* <Pagination
+          activePage={page}
+          totalPages={totalPages}
+          siblingRange={1}
+          onPageChange={this.setPageNum}
+        /> */}
+
+        
             </div>
         );
     }
@@ -67,3 +101,4 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect( mapStateToProps, mapDispatchToProps )( Orders, axios ) ;
+

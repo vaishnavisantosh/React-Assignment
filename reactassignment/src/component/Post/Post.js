@@ -2,28 +2,55 @@ import React , {Component} from 'react'
 import { Card, Icon,Button,Confirm } from 'semantic-ui-react'
 import Axios from '../../axios-orders';
 //import { NavLink } from 'react-router-dom';
+import {connect} from 'react-redux';
+import * as actions from '../../store/actions/index';
+import {NavLink} from 'react-router-dom';
 
 //import moment from "moment"
 
-class Posts extends Component {
+class Post extends Component {
 
-    // state={
-    //     open: false
-    // }
+     state={
+         posts: []
+ }
 
-    
+ componentDidMount () { 
+   
+
+
+        this.setState({posts:this.props.posts});
+
+     }
+
+
+
+
 
     handleConfirm = () =>{
         console.log("key");     
         console.log(this.props.id);
+        
+        
         Axios.delete(`/posts/${this.props.id}.json`)
         .then(response=>{
-            console.log("inside response",response)});
-        // }).then(
-        // this.setState({open:false}));
-        // }
-    //handleCancel = () => this.setState({  open: false })
-    //show = () => this.setState({ open: true })
+            console.log("inside response",response)})
+        
+            
+            let index=this.state.posts.findIndex((num)=>{ return num.id==this.props.id});
+            console.log(index);
+
+            let updatedPosts=this.state.posts.splice(index,1);
+
+
+            //this.setState({posts:updatedPosts});
+           // console.log(this.state.posts);
+
+            const userId = this.props.userId;
+        const tokenId = localStorage.getItem('token');
+        // alert(token);
+        this.props.onFetchPost(userId,tokenId);
+
+
         }
 
 
@@ -61,6 +88,12 @@ render(){
                             </Card.Meta>
                         </Card.Content>
                         <Button key={this.props.key} onClick={this.handleConfirm}>Delete</Button>
+                         <NavLink
+                                style={{ display: "inline-block" }}
+                                to={nextPage}>
+                                <Icon name='edit outline' size="large" /> 
+                             </NavLink> 
+
         
                         {/* <Card.Content extra>
                             {/* <ConfirmationModal
@@ -70,13 +103,9 @@ render(){
                                 rejectionClick={() => { console.log("clicked") }}
                                 confirmationClick={() => { props.clicked(post.Id) }} />
                                 &nbsp; */}
-                              {/* <NavLink
-                                style={{ display: "inline-block" }}
-                                to={nextPage}> */}
-                                {/* <Icon name='edit outline' size="large" /> */}
-                            {/* </NavLink>  */}
-                            {/* <span style={{ float: "right" }}>{updatedDate}</span>
-                        </Card.Content> */}  
+                              {/* { */}
+                         {/* <span style={{ float: "right" }}>{updatedDate}</span>
+                        // </Card.Content> */}  
                     </Card>
                 
           
@@ -85,4 +114,19 @@ render(){
 }
 }
 
-export default Posts;
+const mapStateToProps = state => {
+    return {
+        posts: state.post.posts,
+
+        userId: state.auth.userId,
+        token:state.auth.token
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onFetchPost: (userId,tokenId) => dispatch(actions.fetchPost(userId,tokenId))
+    };
+};
+
+export default connect(mapStateToProps,mapDispatchToProps) (Post);

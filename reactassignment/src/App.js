@@ -7,7 +7,7 @@ import Layout from './hoc/Layout/Layout';
 
 import Logout from './container/Auth/Logout/Logout';
 import * as actions from './store/actions/index';
-import posts from './container/Posts/Post';
+import posts from './container/Posts/Posts';
 import Auth from './container/Auth/Auth';
 import AboutUs from './component/AboutUs/AbountUs';
 import ContactUs from './component/ContactUs/ContactUs';
