@@ -14,11 +14,13 @@ class Posts extends Component {
     
 
     state = {
+        posts:[],
         page: 2,
         itemsPerPage: 10,
       };
     
     componentDidMount () {
+        this.setState({posts:this.props.posts})
         const userId = this.props.userId;
         const tokenId = localStorage.getItem('token');
         // alert(token);
