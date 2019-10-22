@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Button, Form, Grid, Header, Message, Segment, Container,Radio } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions/index';
+import {withRouter} from 'react-router-dom'
+
 // Require Editor JS files.
 import 'froala-editor/js/froala_editor.pkgd.min.js';
 
@@ -9,7 +11,7 @@ import 'froala-editor/js/froala_editor.pkgd.min.js';
 import 'froala-editor/css/froala_style.min.css';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 
-// Require Font Awesome.
+
 
 import FroalaEditor from 'react-froala-wysiwyg';
 // var moment = require('moment');
@@ -112,4 +114,4 @@ const mapStateToProps = state => {
 
 
 
-export default connect(mapStateToProps,mapDispatchToProps) (NewPost);
+export default withRouter(connect(mapStateToProps,mapDispatchToProps) (NewPost));

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import Spinner from '../../component/UI/Spinner/Spinner';
 import * as actions from '../../store/actions/index';
+import Validator from "validatorjs";
 
 
 class Auth extends Component {

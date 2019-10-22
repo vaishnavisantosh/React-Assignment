@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import { Grid, Form, Pagination, Segment } from 'semantic-ui-react';
+import React from 'react'
+import {  Pagination } from 'semantic-ui-react';
 
 const pagination =(props)=>(
 <Pagination
