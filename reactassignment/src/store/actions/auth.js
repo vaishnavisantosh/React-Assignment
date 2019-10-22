@@ -40,12 +40,13 @@ export const checkAuthTimeout = (expirationTime) => {
     };
 };
 
-export const auth = (email, password, isSignUp) => {
+export const auth = (fullName,email, password, isSignUp) => {
     return dispatch => {
         dispatch(authStart());
         const authData = {
             email: email,
             password: password,
+            fullName:fullName,
             returnSecureToken: true
         };
 
@@ -60,6 +61,7 @@ export const auth = (email, password, isSignUp) => {
                 localStorage.setItem('token', response.data.idToken);
                 localStorage.setItem('expirationDate', expirationDate);
                 localStorage.setItem('userId', response.data.localId);
+                localStorage.setItem('fullname',response.data.fullName);
                 dispatch(authSuccess(response.data.idToken, response.data.localId));
                 dispatch(checkAuthTimeout(response.data.expiresIn));
                 let url = "https://cms-react-af25a.firebaseio.com/users/" +response.data.localId + ".json"

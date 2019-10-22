@@ -6,9 +6,9 @@ import Post from '../../component/Post/Post';
 import axios from '../../axios-orders';
 import * as actions from '../../store/actions/index';
 import Spinner from '../../component/UI/Spinner/Spinner';
-import {withRouter} from 'react-router-dom'
+import ErrorBoundry from '../../hoc/ErrorBoundary/ErrorBoundary';
+import {withRouter,Link} from 'react-router-dom'
 
-@withRouter
 class Posts extends Component {
 
 state = {
@@ -23,12 +23,27 @@ componentDidMount () {
   const userId = this.props.userId;
   const tokenId = localStorage.getItem('token');
     // alert(token);
+    if(userId=='ZHW5wt3IP1ZoyPZgw0b12NCMv5B2'){
+      axios.get('/posts.json')
+      .then(res=>{ console.log("get of admin successful",res.data)
+    this.setState({posts:res.data})});
+    console.log("hiiiii",this.state.posts)
+    }
+    else{
   this.props.onFetchPost(userId,tokenId);
+    }
 }
 
-goToCraectePage(){
-  console.log("inside gotocreate")
-  this.props.history.push('/posts/newPost');
+goToCraectePage = (id) => {
+  console.log("inside gotocreate");
+  this.props.history.push(`/posts/${id || 'newPost'}`);
+}
+
+goToPreviewPage=(id)=>{
+  console.log("inside preview");
+
+  this.props.history.push(`/preview/${id}`);
+
 }
 
 onPageChange = (event, attrs) => {
@@ -87,16 +102,18 @@ render () {
         // ) )
     
 }
-    return (
-        
-       // console.log(this.props.posts)
 
-        <div>
-             <Button floated='right' icon labelPosition='left' primary size='small' onClick={this.goToCraectePage}>
-        <Icon name='user' /> Add Post
-      </Button>
-      
-<Table compact celled definition>
+let table=null;
+if(this.props.posts.length<=0){
+  table=<div>
+    no posts
+  </div>
+}
+
+else{
+table=
+<>
+  <Table compact celled definition>
 <Table.Header>
   <Table.Row>
     
@@ -118,6 +135,8 @@ post =  this.props.posts.map( order => (
                createdDate={order.createdDate}
                updatedDate={order.updatedDate}
                id={order.id}
+               handleEdit={this.goToCraectePage}
+               handlePreview={this.goToPreviewPage}
                 />
         ) )
     
@@ -133,7 +152,20 @@ post =  this.props.posts.map( order => (
       totalPages={this.state.posts.length}
   
       onPageChange={this.onPageChange}
-    /> 
+/></> 
+}
+    return (
+        
+       // console.log(this.props.posts)
+
+        <div>
+             <Button floated='right' icon labelPosition='left' primary size='small' onClick={() =>this.goToCraectePage()}>
+         Add Post
+      </Button>
+      <ErrorBoundry>
+        {table}
+
+      </ErrorBoundry>
 
     
         </div>

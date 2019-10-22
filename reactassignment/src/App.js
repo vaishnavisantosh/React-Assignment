@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import NewPost from './container/Posts/NewPost'
-
+import Preview from './component/Post/previewPost';
 import Layout from './hoc/Layout/Layout';
 
 import Logout from './container/Auth/Logout/Logout';
 import * as actions from './store/actions/index';
-import posts from './container/Posts/Posts';
+import Posts from './container/Posts/Posts';
 import Auth from './container/Auth/Auth';
 import AboutUs from './component/AboutUs/AbountUs';
 import ContactUs from './component/ContactUs/ContactUs';
@@ -44,10 +44,13 @@ class App extends Component {
         <Switch>
           <Route path="/logout" component={Logout} />
           <Route path="/auth" component={Auth} />
-          <Route path="/posts/newPost"  component={NewPost}/>
-          <Route path="/posts" component={posts} />
+                    <Route path="/preview/:id" component={Preview}/>
 
-          <Route exact path="/aboutUs" exact component={AboutUs} />
+          <Route path="/posts/:id"  component={NewPost}/>
+
+          <Route path="/posts" render={() => <Posts {...this.props} />} />
+
+                    <Route exact path="/aboutUs" exact component={AboutUs} />
           <Route exact path="/contactUs" component={ContactUs}></Route>
           {/* <Redirect to="/" /> */}
         </Switch>

@@ -13,7 +13,7 @@ import {NavLink,withRouter} from 'react-router-dom';
 class Post extends Component {
 
      
-
+   
  
 
 
@@ -108,9 +108,9 @@ render(){
         <Table.Cell>{this.props.status}</Table.Cell>
         <Table.Cell>{this.props.createdDate}</Table.Cell>
         <Table.Cell>
-        <Button circular icon='edit'  ></Button>
+        <Button circular link onClick={() => this.props.handleEdit(this.props.id)} icon='edit'  ></Button>
         <Button circular icon='trash' key={this.props.key} onClick={this.handleConfirm} ></Button>
-        <Button circular icon='eye'></Button>
+        <Button circular  icon='eye' link onClick={() =>this.props.handlePreview(this.props.id)}></Button>
 
 
         </Table.Cell>

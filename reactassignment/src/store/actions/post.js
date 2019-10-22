@@ -2,6 +2,8 @@ import axios from '../../axios-orders';
 
 import * as actionTypes from './actionTypes';
 
+var moment = require('moment');
+
 export const orderStart = () => {
     return {
         type: actionTypes.ORDER_START
@@ -33,8 +35,8 @@ export const post = (title, description, status,userId,token) => {
             status: status,
             tokenId:userId,
             token:token,
-            createdDate:new Date().getTime() / 1000,
-            updatedDate:new Date().getTime() / 1000
+            createdDate:moment().format('LL'),
+            updatedDate:moment().format('LL')
 
         };
         

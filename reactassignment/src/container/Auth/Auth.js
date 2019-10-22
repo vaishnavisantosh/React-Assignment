@@ -29,7 +29,7 @@ class Auth extends Component {
   submitHandler = (event) => {
     event.preventDefault();
     
-    this.props.onAuth(this.state.form.email, this.state.form.password, this.state.isSignUp);
+    this.props.onAuth(this.state.form.fullName,this.state.form.email, this.state.form.password, this.state.isSignUp);
     
   }
 
@@ -146,7 +146,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onAuth: (email, password, isSignUp) => dispatch(actions.auth(email, password, isSignUp)),
+    onAuth: (fullName,email, password, isSignUp) => dispatch(actions.auth(fullName,email, password, isSignUp)),
     onSetAuthRedirectPath: () => dispatch(actions.setAuthRedirectPath('/posts'))
   };
 };

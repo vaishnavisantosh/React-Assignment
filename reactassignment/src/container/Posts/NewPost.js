@@ -10,18 +10,16 @@ import 'froala-editor/js/froala_editor.pkgd.min.js';
 // Require Editor CSS files.
 import 'froala-editor/css/froala_style.min.css';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
-
-
-
 import FroalaEditor from 'react-froala-wysiwyg';
-// var moment = require('moment');
+import Axios from '../../axios-orders';
+
+var moment = require('moment');
 
 class NewPost extends Component {
 
 
     constructor(props) {
         super(props);
-        this.handleModelChange = this.handleModelChange.bind(this);
     }
 
     state = {
@@ -31,7 +29,19 @@ class NewPost extends Component {
        
     }
 
-    handleModelChange(content) {
+    componentDidMount() {
+        console.log("params",this.props.match.params );
+        if (this.props.match.params.id !== 'newPost') {     
+            Axios.get(`/posts/${this.props.match.params.id}.json`)
+            .then((response)=>{
+                this.setState({title:response.data.title,description:response.data.description});
+                console.log("newPost",response.data);
+     
+            })
+        }
+    }
+
+    handleModelChange=(content)=> {
         this.setState({ description: content });
     }
 
@@ -40,8 +50,21 @@ class NewPost extends Component {
         this.setState( {title:e.target.value});
         //console.log(e.target.value);
     }
+
+    submitHandlerForEdit = (event) => {
+        event.preventDefault();
+        const data={
+            title:this.state.title,
+            description:this.state.description,
+            updatedDate:moment().format('LL')
+
+        }
+       Axios.patch(`/posts/${this.props.match.params.id}.json`,data)
+       .then("successful edited");
+        console.log("inside edit");
+      }
     
-    submitHandler = (event) => {
+    submitHandlerForCreate = (event) => {
         event.preventDefault();
         let userId=this.props.id;
          this.props.onPost(this.state.title, this.state.description, this.state.status,userId);
@@ -51,46 +74,97 @@ class NewPost extends Component {
     render() {
 
         let { title, status } = this.state;
+        let Post=null;
+        if(this.props.match.params.id !== 'newPost')
+       {
+           Post=
+       <Form onSubmit={this.submitHandlerForEdit}>
+        <Form.Input
+            fluid
+            placeholder='Title'
+            value={this.state.title}
+            name="title"
+            
+        />
+        <FroalaEditor
+            model={this.state.description}
+            onModelChange={this.handleModelChange}
+        />
+        <br></br>
+
+        {/* <Form.Field>
+            <Radio
+                label='Draft'
+                name='status'
+                value='Draft'
+                checked={this.state.status}
+                onChange={this.changeHandler}
+            />
+        </Form.Field>
+        <Form.Field>
+            <Radio
+                label='Publish'
+                name='Status'
+                value='Publish'
+                checked={status}
+                onChange={this.changeHandler}
+            />
+        </Form.Field> */}
+
+        <br></br>
+        <Button color='teal' fluid size='large'> Save Post </Button>
+    </Form>
+       }
+       else{
+
+
+        Post=
+       <Form onSubmit={this.submitHandlerForCreate}>
+        <Form.Input
+            fluid
+            placeholder='Title'
+            value={title}
+            name="title"
+            onChange={this.changeTitleHandler}
+        />
+        <FroalaEditor
+            //model={null}
+            onModelChange={this.handleModelChange}
+        />
+        <br></br>
+
+        {/* <Form.Field>
+            <Radio
+                label='Draft'
+                name='status'
+                value='Draft'
+                checked={this.state.status}
+                onChange={this.changeHandler}
+            />
+        </Form.Field>
+        <Form.Field>
+            <Radio
+                label='Publish'
+                name='Status'
+                value='Publish'
+                checked={status}
+                onChange={this.changeHandler}
+            />
+        </Form.Field> */}
+
+        <br></br>
+        <Button color='teal' fluid size='large'> Create Post </Button>
+    </Form>
+
+       }
+    
 
 
 
         return (
-        <Form onSubmit={this.submitHandler}>
-                <Form.Input
-                    fluid
-                    placeholder='Title'
-                    value={title}
-                    name="title"
-                    onChange={this.changeTitleHandler}
-                />
-                <FroalaEditor
-                    //model={null}
-                    onModelChange={this.handleModelChange}
-                />
-                <br></br>
-
-                {/* <Form.Field>
-                    <Radio
-                        label='Draft'
-                        name='status'
-                        value='Draft'
-                        checked={this.state.status}
-                        onChange={this.changeHandler}
-                    />
-                </Form.Field>
-                <Form.Field>
-                    <Radio
-                        label='Publish'
-                        name='Status'
-                        value='Publish'
-                        checked={status}
-                        onChange={this.changeHandler}
-                    />
-                </Form.Field> */}
-
-                <br></br>
-                <Button color='teal' fluid size='large'> Create Post </Button>
-            </Form>
+            <div>
+            {Post}
+       </div>
         );
     }
 }
