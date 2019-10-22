@@ -4,7 +4,7 @@ import Axios from '../../axios-orders';
 //import { NavLink } from 'react-router-dom';
 import {connect} from 'react-redux';
 import * as actions from '../../store/actions/index';
-import {NavLink} from 'react-router-dom';
+import {NavLink,withRouter} from 'react-router-dom';
 
 
 
@@ -137,4 +137,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps,mapDispatchToProps) (Post);
+export default withRouter(connect(mapStateToProps,mapDispatchToProps) (Post));

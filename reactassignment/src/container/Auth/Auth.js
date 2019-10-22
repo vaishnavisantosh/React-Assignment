@@ -30,6 +30,7 @@ class Auth extends Component {
     event.preventDefault();
     
     this.props.onAuth(this.state.form.email, this.state.form.password, this.state.isSignUp);
+    
   }
 
   switchAuthModeHandler = (e) => {
@@ -42,12 +43,19 @@ class Auth extends Component {
 
   render() {
 
+    let authRedirect = null;
+    if (this.props.isAuthenticated) {
+      authRedirect = <Redirect to={this.props.authRedirectPath} />
+      console.log("inside authredirect",authRedirect);
+    }
+
     let { email, password, fullName } = this.state.form;
     const buttonTitle = this.state.isSignUp ? "Sign Up" : "Sign In";
         const switchButtonTitle = this.state.isSignUp ? "Sign IN" : "Sign Up";
 
     let LoginForm = 
       <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
+         {authRedirect}
         <Grid.Column style={{ maxWidth: 450 }}>
           <Header as='h2' color='teal' textAlign='center'>
             {/* <Image src='/logo.png' />  */}
@@ -116,10 +124,6 @@ class Auth extends Component {
       );
     }
 
-    let authRedirect = null;
-    if (this.props.isAuthenticated) {
-      authRedirect = <Redirect to={this.props.authRedirectPath} />
-    }
 
     return (
       <div>
@@ -143,7 +147,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onAuth: (email, password, isSignUp) => dispatch(actions.auth(email, password, isSignUp)),
-    onSetAuthRedirectPath: () => dispatch(actions.setAuthRedirectPath('/'))
+    onSetAuthRedirectPath: () => dispatch(actions.setAuthRedirectPath('/posts'))
   };
 };
 
