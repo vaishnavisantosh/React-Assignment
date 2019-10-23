@@ -50,24 +50,26 @@ goToPreviewPage=(id)=>{
 }
 
 onPageChange = ({ activePage }) => {
-  // let arr=this.props.posts;
-  // console.log("object destructuring",arr)
-  // let end = attrs.activePage * this.state.recordsPerPage;
-  // let start = 0;
-  // if (attrs.activePage === 2) {
-  //     start = this.state.recordsPerPage;
-  // } else {
-  //     start = this.state.recordsPerPage * (attrs.activePage - 1);
-  // }
-  console.log("activePage", activePage)
   
-  const indexOfLastTodo = this.state.currentPage * this.state.recordsPerPage;
-  const indexOfFirstTodo = indexOfLastTodo - this.state.recordsPerPage;
-  const currentPosts = this.state.posts.slice(indexOfFirstTodo, indexOfLastTodo)
- 
-  //let posts = this.state.posts.slice(start, end);
-  console.log(currentPosts);
-  this.setState({ posts:currentPosts });
+  console.log("activePage", activePage)
+
+  
+  // const pageRequestObj = pageRequestData;
+  // const { perPage } = pageRequestData;
+  // pageRequestObj.page = activePage;
+  // const fromIndex = (activePage - 1) ? ((activePage - 1)*perPage) : 0;
+  // const tillIndex = activePage*perPage;
+  // pageRequestObj.records = [...AllArticles].slice(fromIndex,   tillIndex );
+  // setPaginationData({ ...pageRequestObj });
+
+  // const pageRequestObj = pageRequestData;
+    
+    const { recordsPerPage,posts } = this.state;
+  //   pageRequestObj.page = activePage;
+    const fromIndex = (activePage - 1) ? ((activePage - 1)*recordsPerPage) : 0;
+    const tillIndex = activePage*recordsPerPage;
+    const arr = [...this.props.posts].slice(fromIndex,   tillIndex );
+    this.setState({posts:arr, currentPage: activePage });
 }
 
 render () {
@@ -93,17 +95,7 @@ render () {
         console.log("post data",arr);
     
         
-        // post =  arr.map( order => (
-        //     <Post
-        //        key={order.id}
-        //        title={order.title}
-        //        description={order.description}
-        //        status={order.status}
-        //        createdDate={order.createdDate}
-        //        updatedDate={order.updatedDate}
-        //        id={order.id}
-        //         />
-        // ) )
+        
     
 }
 
