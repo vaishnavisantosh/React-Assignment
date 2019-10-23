@@ -6,7 +6,6 @@ import Spinner from '../../component/UI/Spinner/Spinner';
 import * as actions from '../../store/actions/index';
 import Validator from "validatorjs";
 
-
 class Auth extends Component {
   state = {
     form: {
@@ -17,42 +16,37 @@ class Auth extends Component {
     errorMessage: {
       email: "",
       password: ""
-  },
+    },
     isSignUp: true
   }
 
   changeHandler = (e) => {
     let form = { ...this.state.form }
-   //console.log(e.target.name);
+    //console.log(e.target.name);
     form[e.target.name] = e.target.value;
     //console.log(e.target.value);
-
     this.setState({ form });
   }
 
   submitHandler = (event) => {
-        event.preventDefault();
-
+    event.preventDefault();
     if (!this.validate()) {
-           this.props.onAuth(this.state.form.fullName,this.state.form.email, this.state.form.password, this.state.isSignUp);
-
-  }
-    
-    
+      this.props.onAuth(this.state.form.fullName, this.state.form.email, this.state.form.password, this.state.isSignUp);
+    }
   }
 
   validate = () => {
     const rules = {
-        email: 'required|email',
-        password: 'required|min:6|max:15',
-        fullName: 'required|min:6|max:35'
+      email: 'required|email',
+      password: 'required|min:6|max:15',
+      fullName: 'required|min:6|max:35'
     };
 
-    let form = {...this.state.form};
+    let form = { ...this.state.form };
 
     if (!this.state.isSignup) {
-        delete form.fullName;
-        delete rules.fullName;
+      delete form.fullName;
+      delete rules.fullName;
     }
 
     console.log(form, rules)
@@ -61,35 +55,35 @@ class Auth extends Component {
     let isError = validation.fails();
     this.setState({ errorMessage: validation.errors.errors });
     return isError;
-}
+  }
 
-getValidationMessages = () => {
-  let validationMessages = [];
-  if (this.state.errorMessage.email) {
+  getValidationMessages = () => {
+    let validationMessages = [];
+    if (this.state.errorMessage.email) {
       validationMessages.push(<Message key="1"
-          size='mini'
-          error
-          content={this.state.errorMessage.email} />)
-  }
-  if (this.state.errorMessage.password) {
+        size='mini'
+        error
+        content={this.state.errorMessage.email} />)
+    }
+    if (this.state.errorMessage.password) {
       validationMessages.push(<Message key="2"
-          size='mini'
-          error
-          content={this.state.errorMessage.password} />)
-  }
-  if (this.state.errorMessage.fullName) {
+        size='mini'
+        error
+        content={this.state.errorMessage.password} />)
+    }
+    if (this.state.errorMessage.fullName) {
       validationMessages.push(<Message key="3"
-          size='mini'
-          error
-          content={this.state.errorMessage.fullName} />)
+        size='mini'
+        error
+        content={this.state.errorMessage.fullName} />)
+    }
+    return validationMessages;
   }
-  return validationMessages;
-}
 
   switchAuthModeHandler = (e) => {
     e.preventDefault();
     this.setState(prevState => {
-      return {isSignUp: !prevState.isSignUp };
+      return { isSignUp: !prevState.isSignUp };
     });
     console.log(`inside switchAuthhandler `);
   }
@@ -100,16 +94,16 @@ getValidationMessages = () => {
     let authRedirect = null;
     if (this.props.isAuthenticated) {
       authRedirect = <Redirect to={this.props.onSetAuthRedirectPath} />
-      console.log("inside authredirect",authRedirect);
+      console.log("inside authredirect", authRedirect);
     }
 
     let { email, password, fullName } = this.state.form;
     const buttonTitle = this.state.isSignUp ? "Sign Up" : "Sign In";
-        const switchButtonTitle = this.state.isSignUp ? "Sign IN" : "Sign Up";
+    const switchButtonTitle = this.state.isSignUp ? "Sign IN" : "Sign Up";
 
-    let LoginForm = 
+    let LoginForm =
       <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
-         {authRedirect}
+        {authRedirect}
         <Grid.Column style={{ maxWidth: 450 }}>
           <Header as='h2' color='teal' textAlign='center'>
             {/* <Image src='/logo.png' />  */}
@@ -117,14 +111,14 @@ getValidationMessages = () => {
           </Header>
 
           {validationMessages.length ? <Segment style={{ display: "block" }} stacked>
-                        {[...validationMessages]}
-                    </Segment> : null}
+            {[...validationMessages]}
+          </Segment> : null}
           <Form size='large' onSubmit={this.submitHandler}>
-            <Segment stacked> 
-              
+            <Segment stacked>
+
               {
 
-              this.state.isSignUp ?
+                this.state.isSignUp ?
                   <Form.Input
                     fluid
                     icon='user'
@@ -133,7 +127,7 @@ getValidationMessages = () => {
                     value={fullName}
                     name="fullName"
                     type="text"
-                    onChange = {this.changeHandler}
+                    onChange={this.changeHandler}
                   /> : null
               }
               <Form.Input
@@ -157,21 +151,21 @@ getValidationMessages = () => {
                 onChange={this.changeHandler}
               />
               <Button color='teal' fluid size='large'>
-                                {buttonTitle}
-                            </Button>
+                {buttonTitle}
+              </Button>
 
             </Segment>
           </Form>
           <Message>
-        
-          {this.state.isSignUp ? "" : "New to us?"} <a href='#' onClick={this.switchAuthModeHandler}>{switchButtonTitle}</a>:
+
+            {this.state.isSignUp ? "" : "New to us?"} <a href='#' onClick={this.switchAuthModeHandler}>{switchButtonTitle}</a>:
           </Message>
         </Grid.Column>
       </Grid>
-    
+
 
     if (this.props.loading) {
-      LoginForm= <Spinner />
+      LoginForm = <Spinner />
     }
 
     let errorMessage = null;
@@ -185,7 +179,7 @@ getValidationMessages = () => {
 
     return (
       <div>
-        
+
         {LoginForm}
 
       </div>
@@ -204,7 +198,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onAuth: (fullName,email, password, isSignUp) => dispatch(actions.auth(fullName,email, password, isSignUp)),
+    onAuth: (fullName, email, password, isSignUp) => dispatch(actions.auth(fullName, email, password, isSignUp)),
     onSetAuthRedirectPath: () => dispatch(actions.setAuthRedirectPath('/posts'))
   };
 };

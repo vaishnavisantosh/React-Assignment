@@ -11,15 +11,9 @@ import Posts from './container/Posts/Posts';
 import Auth from './container/Auth/Auth';
 import AboutUs from './component/AboutUs/AbountUs';
 import ContactUs from './component/ContactUs/ContactUs';
+import NotFound from './component/404/NotFound';
 
 
-// const asyncOrders = asyncComponent(() => {
-//   return import('./containers/Orders/Orders');
-// });
-
-// const asyncAuth = asyncComponent(() => {
-//   return import('./containers/Auth/Auth');
-// });
 
 class App extends Component {
   componentDidMount () {
@@ -33,6 +27,7 @@ class App extends Component {
         <Route path="/auth" component={Auth} />
         <Route path="/aboutUs" exact component={AboutUs} />
         <Route path="/contactUs" exact component={ContactUs} />
+        <Route  component={NotFound}/>
         {/* <Redirect to="/" /> */}
       </Switch>
     );
@@ -53,6 +48,8 @@ class App extends Component {
                     <Route exact path="/aboutUs" exact component={AboutUs} />
           <Route exact path="/contactUs" component={ContactUs}></Route>
           {/* <Redirect to="/" /> */}
+          <Route  component={NotFound}/>
+
         </Switch>
       );
     }

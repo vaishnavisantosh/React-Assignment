@@ -40,13 +40,13 @@ export const checkAuthTimeout = (expirationTime) => {
     };
 };
 
-export const auth = (fullName,email, password, isSignUp) => {
+export const auth = (fullName, email, password, isSignUp) => {
     return dispatch => {
         dispatch(authStart());
         const authData = {
             email: email,
             password: password,
-            fullName:fullName,
+            fullName: fullName,
             returnSecureToken: true
         };
 
@@ -61,10 +61,10 @@ export const auth = (fullName,email, password, isSignUp) => {
                 localStorage.setItem('token', response.data.idToken);
                 localStorage.setItem('expirationDate', expirationDate);
                 localStorage.setItem('userId', response.data.localId);
-                localStorage.setItem('fullname',response.data.fullName);
+                localStorage.setItem('fullname', response.data.fullName);
                 dispatch(authSuccess(response.data.idToken, response.data.localId));
                 dispatch(checkAuthTimeout(response.data.expiresIn));
-                let url = "https://cms-react-af25a.firebaseio.com/users/" +response.data.localId + ".json"
+                let url = "https://cms-react-af25a.firebaseio.com/users/" + response.data.localId + ".json"
                 if (isSignUp) {
                     authData.userType = "USER";
                     let userDetails = {
@@ -86,7 +86,7 @@ export const auth = (fullName,email, password, isSignUp) => {
                 localStorage.setItem('fullName', response.data.fullName);
                 localStorage.setItem('userType', response.data.userType);
             })
-        
+
             .catch(err => {
                 dispatch(authFail(err.response.data.error));
             });
@@ -112,8 +112,8 @@ export const authCheckState = () => {
             } else {
                 const userId = localStorage.getItem('userId');
                 dispatch(authSuccess(token, userId));
-                dispatch(checkAuthTimeout((expirationDate.getTime() - new Date().getTime()) / 1000 ));
-            }   
+                dispatch(checkAuthTimeout((expirationDate.getTime() - new Date().getTime()) / 1000));
+            }
         }
     };
 };
