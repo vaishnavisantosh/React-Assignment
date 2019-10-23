@@ -61,7 +61,6 @@ export const auth = (fullName, email, password, isSignUp) => {
                 localStorage.setItem('token', response.data.idToken);
                 localStorage.setItem('expirationDate', expirationDate);
                 localStorage.setItem('userId', response.data.localId);
-                localStorage.setItem('fullname', response.data.fullName);
                 dispatch(authSuccess(response.data.idToken, response.data.localId));
                 dispatch(checkAuthTimeout(response.data.expiresIn));
                 let url = "https://cms-react-af25a.firebaseio.com/users/" + response.data.localId + ".json"
@@ -77,6 +76,8 @@ export const auth = (fullName, email, password, isSignUp) => {
                     console.log("above put");
                     return axios.put(url, userDetails)
                     console.log("after put")
+                    localStorage.setItem('fullname',fullName);
+
                 }
                 console.log("before get");
                 return axios.get(url)

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+
+import { withRouter } from 'react-router-dom';
 import { Table, Button } from 'semantic-ui-react';
 import Pagination from '../../component/UI/Pagination/Pagination';
 import Post from '../../component/Post/Post';
@@ -14,7 +16,7 @@ class Posts extends Component {
     posts: [],
     currentPage: 1,
     totalPages: 0,
-    recordsPerPage: 3,
+    recordsPerPage: 1,
   };
 
   componentDidMount() {
@@ -37,6 +39,27 @@ class Posts extends Component {
       });
     }
   }
+
+  handleConfirm = (id) => {
+    console.log("key");
+    console.log(this.props.id);
+
+
+    axios.delete(`/posts/${id}.json`)
+        .then(response => {
+            const userId = this.props.userId;
+            const tokenId = localStorage.getItem('token');
+
+            this.props.onFetchPost(userId, tokenId).then(response=>{
+              this.setState({posts:response})
+            }
+              
+            )
+            console.log("inside delete")
+        })
+
+}
+
 
   goToCraectePage = (id) => {
     console.log("inside gotocreate");
@@ -64,7 +87,7 @@ class Posts extends Component {
     let arr = [];
     const { posts } = this.state;
     console.log("inside container");
-    console.log(this.props.posts)
+    console.log(this.props)
 
     //console.log(this.props.post
     let post = <Spinner />;
@@ -105,6 +128,7 @@ class Posts extends Component {
                     createdDate={order.createdDate}
                     updatedDate={order.updatedDate}
                     id={order.id}
+                    handleDelete={this.handleConfirm}
                     handleEdit={this.goToCraectePage}
                     handlePreview={this.goToPreviewPage}
                   />
@@ -126,7 +150,7 @@ class Posts extends Component {
     return (
 
       // console.log(this.props.posts)
-
+      <>
       <div>
         <Button floated='right' icon labelPosition='left' primary size='small' onClick={() => this.goToCraectePage()}>
           Add Post
@@ -138,6 +162,7 @@ class Posts extends Component {
 
 
       </div>
+      </>
     );
   }
 }
@@ -157,7 +182,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default (connect(mapStateToProps, mapDispatchToProps)(Posts, axios));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Posts, axios));
 
 
 

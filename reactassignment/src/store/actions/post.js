@@ -95,10 +95,8 @@ export const fetchPost = (userId,tokenId) => {
                         id: key
                     } );
                 }
-
-                resolve(fetchedOrders);
-                
                 dispatch(fetchPostSuccess(fetchedOrders));
+                resolve(fetchedOrders);
             } )
             .catch( err => {
                 reject(err);

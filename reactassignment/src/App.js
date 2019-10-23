@@ -34,22 +34,20 @@ class App extends Component {
 
     if ( this.props.isAuthenticated ) {
       let userId=localStorage.getItem('userId');
-      console.log(userId);
+
+      
+      //console.log(userId);
       routes = (
         <Switch>
           <Route path="/logout" component={Logout} />
           <Route path="/auth" component={Auth} />
-                    <Route path="/preview/:id" component={Preview}/>
-
+          <Route path="/preview/:id" component={Preview}/>
           <Route path="/posts/:id"  component={NewPost}/>
-
-          <Route path="/posts" render={() => <Posts {...this.props} />} />
-
-                    <Route exact path="/aboutUs" exact component={AboutUs} />
+          <Route path="/posts" component={Posts} />} />
+          <Route exact path="/aboutUs" exact component={AboutUs} />
           <Route exact path="/contactUs" component={ContactUs}></Route>
           {/* <Redirect to="/" /> */}
           <Route  component={NotFound}/>
-
         </Switch>
       );
     }
