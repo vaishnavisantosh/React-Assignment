@@ -54,18 +54,9 @@ onPageChange = ({ activePage }) => {
   console.log("activePage", activePage)
 
   
-  // const pageRequestObj = pageRequestData;
-  // const { perPage } = pageRequestData;
-  // pageRequestObj.page = activePage;
-  // const fromIndex = (activePage - 1) ? ((activePage - 1)*perPage) : 0;
-  // const tillIndex = activePage*perPage;
-  // pageRequestObj.records = [...AllArticles].slice(fromIndex,   tillIndex );
-  // setPaginationData({ ...pageRequestObj });
-
-  // const pageRequestObj = pageRequestData;
+  
     
-    const { recordsPerPage,posts } = this.state;
-  //   pageRequestObj.page = activePage;
+    const { recordsPerPage } = this.state;
     const fromIndex = (activePage - 1) ? ((activePage - 1)*recordsPerPage) : 0;
     const tillIndex = activePage*recordsPerPage;
     const arr = [...this.props.posts].slice(fromIndex,   tillIndex );
@@ -78,13 +69,6 @@ render () {
 
 
     
-//     const recordsPerPage = 10;
-// let page= this.state.page;
-// let totalPages = 100 / recordsPerPage;
-// let posts = this.arr.slice(
-//   (page - 1) * recordsPerPage,
-//   (page - 1) * recordsPerPage + recordsPerPage
-// );
     console.log("inside container");
     console.log(this.props.posts)
 
