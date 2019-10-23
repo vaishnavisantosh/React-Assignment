@@ -14,6 +14,10 @@ class Auth extends Component {
       password: "",
       fullName: ""
     },
+    errorMessage: {
+      email: "",
+      password: ""
+  },
     isSignUp: true
   }
 
@@ -27,11 +31,60 @@ class Auth extends Component {
   }
 
   submitHandler = (event) => {
-    event.preventDefault();
+        event.preventDefault();
+
+    if (!this.validate()) {
+           this.props.onAuth(this.state.form.fullName,this.state.form.email, this.state.form.password, this.state.isSignUp);
+
+  }
     
-    this.props.onAuth(this.state.form.fullName,this.state.form.email, this.state.form.password, this.state.isSignUp);
     
   }
+
+  validate = () => {
+    const rules = {
+        email: 'required|email',
+        password: 'required|min:6|max:15',
+        fullName: 'required|min:6|max:35'
+    };
+
+    let form = {...this.state.form};
+
+    if (!this.state.isSignup) {
+        delete form.fullName;
+        delete rules.fullName;
+    }
+
+    console.log(form, rules)
+
+    let validation = new Validator(form, rules);
+    let isError = validation.fails();
+    this.setState({ errorMessage: validation.errors.errors });
+    return isError;
+}
+
+getValidationMessages = () => {
+  let validationMessages = [];
+  if (this.state.errorMessage.email) {
+      validationMessages.push(<Message key="1"
+          size='mini'
+          error
+          content={this.state.errorMessage.email} />)
+  }
+  if (this.state.errorMessage.password) {
+      validationMessages.push(<Message key="2"
+          size='mini'
+          error
+          content={this.state.errorMessage.password} />)
+  }
+  if (this.state.errorMessage.fullName) {
+      validationMessages.push(<Message key="3"
+          size='mini'
+          error
+          content={this.state.errorMessage.fullName} />)
+  }
+  return validationMessages;
+}
 
   switchAuthModeHandler = (e) => {
     e.preventDefault();
@@ -42,10 +95,11 @@ class Auth extends Component {
   }
 
   render() {
+    let validationMessages = this.getValidationMessages();
 
     let authRedirect = null;
     if (this.props.isAuthenticated) {
-      authRedirect = <Redirect to={this.props.authRedirectPath} />
+      authRedirect = <Redirect to={this.props.onSetAuthRedirectPath} />
       console.log("inside authredirect",authRedirect);
     }
 
@@ -61,6 +115,10 @@ class Auth extends Component {
             {/* <Image src='/logo.png' />  */}
             {/* Log-in to your account */}
           </Header>
+
+          {validationMessages.length ? <Segment style={{ display: "block" }} stacked>
+                        {[...validationMessages]}
+                    </Segment> : null}
           <Form size='large' onSubmit={this.submitHandler}>
             <Segment stacked> 
               

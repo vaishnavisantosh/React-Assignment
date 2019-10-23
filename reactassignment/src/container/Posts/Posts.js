@@ -14,12 +14,12 @@ class Posts extends Component {
 state = {
     posts:[],
     currentPage: 1,
-  
-    itemsPerPage: 2,
+    totalPages: 0,
+    recordsPerPage: 3,
   };
 
 componentDidMount () {
-  this.setState({posts:this.props.posts})
+
   const userId = this.props.userId;
   const tokenId = localStorage.getItem('token');
     // alert(token);
@@ -30,7 +30,10 @@ componentDidMount () {
     console.log("hiiiii",this.state.posts)
     }
     else{
-  this.props.onFetchPost(userId,tokenId);
+  this.props.onFetchPost(userId,tokenId).then((res) => {
+    this.setState({posts: res.slice(0, this.state.recordsPerPage)})
+    this.setState({totalPages: Math.ceil(res.length/this.state.recordsPerPage)});
+  });
     }
 }
 
@@ -46,19 +49,20 @@ goToPreviewPage=(id)=>{
 
 }
 
-onPageChange = (event, attrs) => {
+onPageChange = ({ activePage }) => {
   // let arr=this.props.posts;
   // console.log("object destructuring",arr)
-  // let end = attrs.activePage * this.state.itemsPerPage;
+  // let end = attrs.activePage * this.state.recordsPerPage;
   // let start = 0;
   // if (attrs.activePage === 2) {
-  //     start = this.state.itemsPerPage;
+  //     start = this.state.recordsPerPage;
   // } else {
-  //     start = this.state.itemsPerPage * (attrs.activePage - 1);
+  //     start = this.state.recordsPerPage * (attrs.activePage - 1);
   // }
-  // console.log("inside pagination")
-  const indexOfLastTodo = this.state.currentPage * this.state.itemsPerPage;
-  const indexOfFirstTodo = indexOfLastTodo - this.state.itemsPerPage;
+  console.log("activePage", activePage)
+  
+  const indexOfLastTodo = this.state.currentPage * this.state.recordsPerPage;
+  const indexOfFirstTodo = indexOfLastTodo - this.state.recordsPerPage;
   const currentPosts = this.state.posts.slice(indexOfFirstTodo, indexOfLastTodo)
  
   //let posts = this.state.posts.slice(start, end);
@@ -72,12 +76,12 @@ render () {
 
 
     
-//     const itemsPerPage = 10;
+//     const recordsPerPage = 10;
 // let page= this.state.page;
-// let totalPages = 100 / itemsPerPage;
+// let totalPages = 100 / recordsPerPage;
 // let posts = this.arr.slice(
-//   (page - 1) * itemsPerPage,
-//   (page - 1) * itemsPerPage + itemsPerPage
+//   (page - 1) * recordsPerPage,
+//   (page - 1) * recordsPerPage + recordsPerPage
 // );
     console.log("inside container");
     console.log(this.props.posts)
@@ -126,7 +130,7 @@ table=
 
 <Table.Body>
 {   
-post =  this.props.posts.map( order => (
+post =  this.state.posts.map( order => (
             <Post
                key={order.id}
                title={order.title}
@@ -148,10 +152,9 @@ post =  this.props.posts.map( order => (
 
         
           <Pagination
-
-      totalPages={this.state.posts.length}
-  
-      onPageChange={this.onPageChange}
+      activePage={this.state.currentPage}
+      totalPages={this.state.totalPages}
+      onPageChange={(e, data) => this.onPageChange(data)}
 /></> 
 }
     return (

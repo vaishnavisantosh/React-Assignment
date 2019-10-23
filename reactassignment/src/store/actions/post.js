@@ -79,7 +79,7 @@ export const fetchPostStart = () => {
 export const fetchPost = (userId,tokenId) => {
     
 
-    return dispatch => {
+    return dispatch => new Promise((resolve, reject) => {
         dispatch(fetchPostStart());
         // alert('?auth=' + tokenId + '&orderBy="tokenId"&equalTo="' + userId+ '');
         const queryParams = '?auth=' + tokenId + '&orderBy="tokenId"&equalTo="'+userId+'"';
@@ -95,11 +95,14 @@ export const fetchPost = (userId,tokenId) => {
                         id: key
                     } );
                 }
+
+                resolve(fetchedOrders);
                 
                 dispatch(fetchPostSuccess(fetchedOrders));
             } )
             .catch( err => {
+                reject(err);
                 dispatch(fetchPostFail(err));
             } );
-    };
+    });
 };
