@@ -41,7 +41,7 @@ export const checkAuthTimeout = (expirationTime) => {
 };
 
 export const auth = (fullName, email, password, isSignUp) => {
-    return dispatch => {
+    return dispatch => new Promise((resolve, reject)=>{
         dispatch(authStart());
         const authData = {
             email: email,
@@ -68,30 +68,32 @@ export const auth = (fullName, email, password, isSignUp) => {
                     authData.userType = "USER";
                     let userDetails = {
                         fullName: authData.fullName,
-                        // userType: "USER",
+                        userType: "USER",
                         user_email: authData.email,
                         created_on: new Date().getTime() / 1000,
                         // updated_on: new Date().getTime() / 1000
                     }
-                    console.log("above put");
+                   
                     return axios.put(url, userDetails)
-                    console.log("after put")
-                    localStorage.setItem('fullname',fullName);
+                   
 
                 }
                 console.log("before get");
                 return axios.get(url)
                 console.log("after get")
             }).then(response => {
-                console.log("last response")
+                console.log("last response", response)
                 localStorage.setItem('fullName', response.data.fullName);
                 localStorage.setItem('userType', response.data.userType);
+                resolve(response.data.fullName)
+
             })
 
             .catch(err => {
                 dispatch(authFail(err.response.data.error));
+                reject(err);
             });
-    };
+    })
 };
 
 export const setAuthRedirectPath = (path) => {

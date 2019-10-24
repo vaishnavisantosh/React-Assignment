@@ -3,6 +3,8 @@ import PieChart from '@bit/recharts.recharts.pie-chart';
 import Pie from '@bit/recharts.recharts.pie';
 import Sector from '@bit/recharts.recharts.sector';
 import Cell from '@bit/recharts.recharts.cell';
+import axios from '../../axios-orders';
+
 
 const data = [
 	{}
@@ -25,7 +27,31 @@ const renderCustomizedLabel = ({
 	);
 };
 
-export default class Example extends PureComponent {
+class AuthVsPost extends PureComponent {
+
+	state={
+		allUser:[],
+		allPost:[]
+	}
+
+	getAllChartData = async () => {
+		let users;
+		let posts;
+		try {
+			users = await axios.get('/users.json');
+			posts = await axios.get('/posts.json');
+			this.setState({allUser:users,allPost:posts})
+		} catch (error) {
+			console.log(error);
+		}
+		return { users, posts }
+
+	}
+	
+	componentDidMount(){
+		getAllChartData();
+	}
+	
 	render() {
 		return (
 			<PieChart width={400} height={400}>
@@ -48,3 +74,4 @@ export default class Example extends PureComponent {
 	}
 }
 
+export default AuthVsPost;

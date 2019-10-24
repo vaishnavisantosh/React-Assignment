@@ -19,8 +19,9 @@ class NewPost extends Component {
 
     state = {
         title: '',
-        description: '',
-        status: 'Draft',
+        description:'' ,
+        status: '',
+        isPublish:false
 
     }
 
@@ -40,6 +41,14 @@ class NewPost extends Component {
         this.setState({ description: content });
     }
 
+        handlePublish = (e) => {
+            this.setState({status:'Published'})
+            if(this.state.status=="Published"){this.setState({isPublish:true})}
+            
+        }
+   
+
+
     changeTitleHandler = (e) => {
 
         this.setState({ title: e.target.value });
@@ -51,7 +60,8 @@ class NewPost extends Component {
         const data = {
             title: this.state.title,
             description: this.state.description,
-            updatedDate: moment().format('LL')
+            updatedDate: moment().format('LL'),
+            status:this.state.status
 
         }
         Axios.patch(`/posts/${this.props.match.params.id}.json`, data)
@@ -67,6 +77,7 @@ class NewPost extends Component {
     }
 
     render() {
+       // const buttonTitle = this.state.isPublish ? "Publish" : "Published";
 
         let { title, status } = this.state;
         let Post = null;
@@ -86,26 +97,9 @@ class NewPost extends Component {
                     />
                     <br></br>
 
-                    {/* <Form.Field>
-            <Radio
-                label='Draft'
-                name='status'
-                value='Draft'
-                checked={this.state.status}
-                onChange={this.changeHandler}
-            />
-        </Form.Field>
-        <Form.Field>
-            <Radio
-                label='Publish'
-                name='Status'
-                value='Publish'
-                checked={status}
-                onChange={this.changeHandler}
-            />
-        </Form.Field> */}
 
-                    <br></br>
+                    <Button color='teal'  size='small' onClick={this.handlePublish}>PUBLISH</Button>
+
                     <Button color='teal' fluid size='large'> Save Post </Button>
                 </Form>
         }
@@ -127,24 +121,7 @@ class NewPost extends Component {
                     />
                     <br></br>
 
-                    {/* <Form.Field>
-            <Radio
-                label='Draft'
-                name='status'
-                value='Draft'
-                checked={this.state.status}
-                onChange={this.changeHandler}
-            />
-        </Form.Field>
-        <Form.Field>
-            <Radio
-                label='Publish'
-                name='Status'
-                value='Publish'
-                checked={status}
-                onChange={this.changeHandler}
-            />
-        </Form.Field> */}
+                  
 
                     <br></br>
                     <Button color='teal' fluid size='large'> Create Post </Button>

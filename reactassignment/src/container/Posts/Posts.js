@@ -16,7 +16,8 @@ class Posts extends Component {
     posts: [],
     currentPage: 1,
     totalPages: 0,
-    recordsPerPage: 1,
+    recordsPerPage: 3,
+    allPost:[]
   };
 
   componentDidMount() {
@@ -24,18 +25,33 @@ class Posts extends Component {
     const userId = this.props.userId;
     const tokenId = localStorage.getItem('token');
     // alert(token);
-    if (userId == 'ZHW5wt3IP1ZoyPZgw0b12NCMv5B2') {
+    if (localStorage.getItem('userType')==='admin') {
       axios.get('/posts.json')
         .then(res => {
-          console.log("get of admin successful", res.data)
-          this.setState({ posts: res.data })
-        });
-      console.log("hiiiii", this.state.posts)
+        //   //console.log("get of admin successful", res.data)
+        //   //console.log(Object.keys(res.data))
+        // const arr=Object.entries(res.data).map(([key, value]) => ({key,value}))
+        //   
+        const fetchedOrders = [];
+                for ( let key in res.data ) {
+                    fetchedOrders.push( {
+                        ...res.data[key],
+                        id: key
+                    } );
+                }
+                this.setState({ posts: fetchedOrders.slice(0,this.state.recordsPerPage),allPost:fetchedOrders })
+                this.setState({ totalPages: Math.ceil(fetchedOrders.length / this.state.recordsPerPage) });
+
+
+          console.log("this state posts",this.state.posts)
+        })
+      
     }
     else {
       this.props.onFetchPost(userId, tokenId).then((res) => {
-        this.setState({ posts: res.slice(0, this.state.recordsPerPage) })
+        this.setState({ posts: res.slice(0, this.state.recordsPerPage),allPost:res })
         this.setState({ totalPages: Math.ceil(res.length / this.state.recordsPerPage) });
+        console.log("this state posts",this.state.posts)
       });
     }
   }
@@ -51,7 +67,7 @@ class Posts extends Component {
             const tokenId = localStorage.getItem('token');
 
             this.props.onFetchPost(userId, tokenId).then(response=>{
-              this.setState({posts:response})
+              this.setState({posts:response,allPost:response})
             }
               
             )
@@ -63,13 +79,13 @@ class Posts extends Component {
 
   goToCraectePage = (id) => {
     console.log("inside gotocreate");
-    this.props.history.push(`/posts/${id || 'newPost'}`);
+    this.props.history.push(`/app/posts/${id || 'newPost'}`);
   }
 
   goToPreviewPage = (id) => {
     console.log("inside preview");
 
-    this.props.history.push(`/preview/${id}`);
+    this.props.history.push(`/app/preview/${id}`);
 
   }
 
@@ -79,13 +95,14 @@ class Posts extends Component {
     const { recordsPerPage } = this.state;
     const fromIndex = (activePage - 1) ? ((activePage - 1) * recordsPerPage) : 0;
     const tillIndex = activePage * recordsPerPage;
-    const arr = [...this.props.posts].slice(fromIndex, tillIndex);
+    const arr = this.state.allPost.slice(fromIndex, tillIndex);
     this.setState({ posts: arr, currentPage: activePage });
   }
 
   render() {
     let arr = [];
     const { posts } = this.state;
+    const userId = this.props.userId;
     console.log("inside container");
     console.log(this.props)
 
@@ -97,13 +114,59 @@ class Posts extends Component {
     }
 
     let table = null;
-    if (this.props.posts.length <= 0) {
+    if (this.state.allPost.length <= 0) {
       table = <div>
         no posts
   </div>
     }
 
     else {
+
+      if(localStorage.getItem('userType')==='admin'){
+        table =
+        <>
+          <Table compact celled definition>
+            <Table.Header>
+              <Table.Row>
+
+                <Table.HeaderCell>Title</Table.HeaderCell>
+                <Table.HeaderCell>status</Table.HeaderCell>
+                <Table.HeaderCell>Created Date</Table.HeaderCell>
+                <Table.HeaderCell>Actions</Table.HeaderCell>
+              </Table.Row>
+            </Table.Header>
+
+            <Table.Body>
+              {
+                post = this.state.posts.map(order => (
+                  <Post
+                    key={order.id}
+                    title={order.title}
+                    description={order.description}
+                    status={order.status}
+                    createdDate={order.createdDate}
+                    updatedDate={order.updatedDate}
+                    id={order.id}
+                    handleDelete={this.handleConfirm}
+                    handleEdit={this.goToCraectePage}
+                    handlePreview={this.goToPreviewPage}
+                  />
+                ))
+
+              }
+            </Table.Body>
+
+
+          </Table>
+
+
+          </>
+
+      }
+
+      else{
+
+
       table =
         <>
           <Table compact celled definition>
@@ -141,11 +204,9 @@ class Posts extends Component {
           </Table>
 
 
-          <Pagination
-            activePage={this.state.currentPage}
-            totalPages={this.state.totalPages}
-            onPageChange={(e, data) => this.onPageChange(data)}
-          /></>
+         
+          </>
+            }
     }
     return (
 
@@ -157,7 +218,11 @@ class Posts extends Component {
       </Button>
         <ErrorBoundry>
           {table}
-
+          <Pagination
+            activePage={this.state.currentPage}
+            totalPages={this.state.totalPages}
+            onPageChange={(e, data) => this.onPageChange(data)}
+          />
         </ErrorBoundry>
 
 

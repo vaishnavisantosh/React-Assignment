@@ -31,8 +31,18 @@ class Auth extends Component {
   submitHandler = (event) => {
     event.preventDefault();
     if (!this.validate()) {
-      this.props.onAuth(this.state.form.fullName, this.state.form.email, this.state.form.password, this.state.isSignUp);
+     
+      this.props.onAuth(this.state.form.fullName, this.state.form.email, this.state.form.password, this.state.isSignUp).then(res=>{
+        if(localStorage.getItem('userType')=='admin'){
+          this.props.history.push("/app/dashboard");
+        }
+        else{
+          this.props.history.push("/app/posts");
+        }
+      })
+
     }
+    
   }
 
   validate = () => {
@@ -103,7 +113,7 @@ class Auth extends Component {
 
     let LoginForm =
       <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
-        {authRedirect}
+        {/* {authRedirect} */}
         <Grid.Column style={{ maxWidth: 450 }}>
           <Header as='h2' color='teal' textAlign='center'>
             {/* <Image src='/logo.png' />  */}
@@ -199,7 +209,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onAuth: (fullName, email, password, isSignUp) => dispatch(actions.auth(fullName, email, password, isSignUp)),
-    onSetAuthRedirectPath: () => dispatch(actions.setAuthRedirectPath('/posts'))
+    onSetAuthRedirectPath: () => dispatch(actions.setAuthRedirectPath('/app/posts'))
   };
 };
 

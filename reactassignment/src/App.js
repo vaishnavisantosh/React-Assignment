@@ -12,8 +12,8 @@ import Auth from './container/Auth/Auth';
 import AboutUs from './component/AboutUs/AbountUs';
 import ContactUs from './component/ContactUs/ContactUs';
 import NotFound from './component/404/NotFound';
-
-
+import DashBoard from './container/DashBoard/Dashboard';
+import Home from './container/Home/Home';
 
 class App extends Component {
   componentDidMount () {
@@ -21,19 +21,28 @@ class App extends Component {
   }
 
   render () {
-    
+    let username;
+    let isAdmin;
     let routes = (
       <Switch>
         <Route path="/auth" component={Auth} />
         <Route path="/aboutUs" exact component={AboutUs} />
         <Route path="/contactUs" exact component={ContactUs} />
+        
+        <Route exact path="/" exact component={Home} />
         <Route  component={NotFound}/>
         {/* <Redirect to="/" /> */}
       </Switch>
     );
 
     if ( this.props.isAuthenticated ) {
-      let userId=localStorage.getItem('userId');
+    let  userType=localStorage.getItem('useType');
+      if(userType=='admin'){
+        isAdmin=true
+      }
+      else{
+        isAdmin=false
+      }
 
       
       //console.log(userId);
@@ -41,11 +50,15 @@ class App extends Component {
         <Switch>
           <Route path="/logout" component={Logout} />
           <Route path="/auth" component={Auth} />
-          <Route path="/preview/:id" component={Preview}/>
-          <Route path="/posts/:id"  component={NewPost}/>
-          <Route path="/posts" component={Posts} />} />
+          <Route path="/app/preview/:id" component={Preview}/>
+          <Route path="/app/posts/:id"  component={NewPost}/>
+          <Route path="/app/posts" component={Posts} />} />
           <Route exact path="/aboutUs" exact component={AboutUs} />
           <Route exact path="/contactUs" component={ContactUs}></Route>
+          {isAdmin &&
+          <Route exact path="/app/dashboard" exact component={DashBoard} />
+          }
+          {/* <Route exact path="/" exact component={Home} /> */}
           {/* <Redirect to="/" /> */}
           <Route  component={NotFound}/>
         </Switch>
