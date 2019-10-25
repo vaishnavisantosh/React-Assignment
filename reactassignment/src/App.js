@@ -12,7 +12,7 @@ import Auth from './container/Auth/Auth';
 import AboutUs from './component/AboutUs/AbountUs';
 import ContactUs from './component/ContactUs/ContactUs';
 import NotFound from './component/404/NotFound';
-import DashBoard from './container/DashBoard/Dashboard';
+import DashBoard from './container/DashBoard/Dashboard'
 import Home from './container/Home/Home';
 
 class App extends Component {
@@ -25,11 +25,12 @@ class App extends Component {
     let isAdmin;
     let routes = (
       <Switch>
-        <Route path="/auth" component={Auth} />
+        <Route path="/auth" exact component={Auth} />
         <Route path="/aboutUs" exact component={AboutUs} />
         <Route path="/contactUs" exact component={ContactUs} />
+       
+        <Route  path="/"  component={Home} />
         
-        <Route exact path="/" exact component={Home} />
         <Route  component={NotFound}/>
         {/* <Redirect to="/" /> */}
       </Switch>
@@ -43,7 +44,7 @@ class App extends Component {
       else{
         isAdmin=false
       }
-
+      
       
       //console.log(userId);
       routes = (
@@ -55,12 +56,13 @@ class App extends Component {
           <Route path="/app/posts" component={Posts} />} />
           <Route exact path="/aboutUs" exact component={AboutUs} />
           <Route exact path="/contactUs" component={ContactUs}></Route>
+         
           {isAdmin &&
-          <Route exact path="/app/dashboard" exact component={DashBoard} />
+          <Route exact path="/app/dashboard" component={DashBoard} />
           }
-          {/* <Route exact path="/" exact component={Home} /> */}
-          {/* <Redirect to="/" /> */}
+         <Route  path="/"  component={Home} />
           <Route  component={NotFound}/>
+          
         </Switch>
       );
     }

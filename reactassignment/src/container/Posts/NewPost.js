@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Button, Form, Grid, Header, Message, Segment, Container, Radio } from 'semantic-ui-react';
+import { Button, Form,Radio } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions/index';
 import { withRouter } from 'react-router-dom'
-
+  
 // Require Editor JS files.
 import 'froala-editor/js/froala_editor.pkgd.min.js';
 
@@ -20,11 +20,12 @@ class NewPost extends Component {
     state = {
         title: '',
         description:'' ,
-        status: '',
+       
         isPublish:false
 
     }
 
+    handleChange = (e, { value }) => this.setState({value })
     componentDidMount() {
         console.log("params", this.props.match.params);
         if (this.props.match.params.id !== 'newPost') {
@@ -61,7 +62,7 @@ class NewPost extends Component {
             title: this.state.title,
             description: this.state.description,
             updatedDate: moment().format('LL'),
-            status:this.state.status
+            status:this.state.value
 
         }
         Axios.patch(`/posts/${this.props.match.params.id}.json`, data)
@@ -78,8 +79,17 @@ class NewPost extends Component {
 
     render() {
        // const buttonTitle = this.state.isPublish ? "Publish" : "Published";
-
-        let { title, status } = this.state;
+       let isAdmin;
+        
+        if(localStorage.getItem('userType')==='admin')
+        {
+            isAdmin=true
+        }
+        else{
+            isAdmin=false
+        }
+      
+        let { title } = this.state;
         let Post = null;
         if (this.props.match.params.id !== 'newPost') {
             Post =
@@ -98,8 +108,27 @@ class NewPost extends Component {
                     <br></br>
 
 
-                    <Button color='teal'  size='small' onClick={this.handlePublish}>PUBLISH</Button>
-
+              {isAdmin && 
+              <>     
+              <Form.Field>
+          <Radio
+            label='Draft'
+            name='radioGroup'
+            value='Draft'
+            checked={this.state.value === 'Draft'}
+            onChange={this.handleChange}
+          />
+        </Form.Field>
+        <Form.Field>
+          <Radio
+            label='Publish'
+            name='radioGroup'
+            value='Publish'
+            checked={this.state.value === 'Publish'}
+            onChange={this.handleChange}
+          />
+        </Form.Field>
+             </> }
                     <Button color='teal' fluid size='large'> Save Post </Button>
                 </Form>
         }

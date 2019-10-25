@@ -5,12 +5,14 @@ import { Route,Link } from 'react-router-dom';
 import PublicPost from '../../component/Post/PublicPosts';
 
 class Home extends Component {
-
-    state = {
+constructor(){
+    super();
+   this.state = {
         allPosts: [],
         publishedPost: []
 
     }
+}
 
     componentDidMount() {
         axios.get('/posts.json')

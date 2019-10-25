@@ -1,15 +1,19 @@
 import React, {Component} from 'react';
-//import PieChart from '../../component/Charts/autherVsNumberOfPosts';
+import PieChart from '../../component/Charts/autherVsNumberOfPosts';
 //import DonutChart from '../../component/Charts/publishedVsUnpublished';
 
 
-class Dashboard extends Component{
+class dashboard extends Component{
     render(){
-        return(<div>admin dashboard</div>);
+        return(
+            <>
+            inside Dashboard
+       
+</>        );
 
     }
 
 
 }
 
-export default Dashboard;
+export default dashboard;

@@ -1,8 +1,10 @@
 import React, { PureComponent } from 'react';
-import PieChart from '@bit/recharts.recharts.pie-chart';
-import Pie from '@bit/recharts.recharts.pie';
-import Sector from '@bit/recharts.recharts.sector';
- 
+import {PieChart,Pie,Sector,Cell} from 'recharts'
+
+// import PieChart from '@bit/recharts.recharts.pie-chart';
+// import Pie from '@bit/recharts.recharts.pie';
+// import Sector from '@bit/recharts.recharts.sector';
+import axios from '../../axios-orders';
 const data = [
 	{}
 ];
@@ -58,6 +60,10 @@ const renderActiveShape = (props) => {
 export default class Example extends PureComponent {
 	state = {
 		activeIndex: 0,
+		allPosts:[],
+		unpublished:[],
+		published:[]
+
 	};
 
 	onPieEnter = (data, index) => {
@@ -66,7 +72,41 @@ export default class Example extends PureComponent {
 		});
 	};
 
+	componentDidMount(){
+	
+		const allData=[]
+		let publish=[];
+		let unPublish=[];
+		axios.get('./posts'.json)
+		.then(res=>{
+			
+                for ( let key in res.data ) {
+                    allData.push( {
+                        ...res.data[key],
+                        id: key
+                    } );
+				}
+				this.setState({allPosts:allData})
+		
+		this.setState({published:allData.filter(post => post.status == 'Published')})
+		this.setState({unpublished:allData.filter(post => post.status == 'Published')})
+
+
+		}
+		
+		)
+	}
+
+
 	render() {
+		
+		
+		const data = [
+			{name: 'Published', value: this.state.published.length},
+			{name:'UnPublished',value:this.state.unpublished.length}
+		];
+
+
 		return (
 			<PieChart width={400} height={400}>
 				<Pie

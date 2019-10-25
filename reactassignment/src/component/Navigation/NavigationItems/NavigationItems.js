@@ -19,16 +19,22 @@ const navigationItems = (props) => {
             {props.isAuthenticated ?
                 <>
                 {isApp ?
+                <>
                 <Menu.Item
                     name='home'
                     as={Link} to="/"
-                    exact
-                /> :
+                    
+                /> 
+                
+                
+                </>
+                :
                 <Menu.Item
                     name='dashboard'
                     as={Link} to={isAdmin? '/app/dashboard': '/app/posts'}
                     exact
                 />
+               
                 }
         
                 </> : null}
@@ -42,6 +48,7 @@ const navigationItems = (props) => {
                 as={Link} to="/contactUs"
                 exact
             />
+            
     </>
         }
     
@@ -50,13 +57,16 @@ const navigationItems = (props) => {
                 <Menu.Item
                     name='home'
                     as={Link} to="/"
-                    exact
+                   
                 />
                 <Menu.Item
                     name='POSTS'
                     as={Link} to="/app/posts"
                     exact
-                /></> : null}
+                />
+                
+                </> 
+                : null}
             {!props.isAuthenticated
                 ? <Menu.Item
                     name='SIGN UP'
