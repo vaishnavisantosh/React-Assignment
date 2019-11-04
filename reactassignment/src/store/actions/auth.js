@@ -1,6 +1,8 @@
 import axios from 'axios';
-
 import * as actionTypes from './actionTypes';
+
+
+var moment=require('moment');
 
 export const authStart = () => {
     return {
@@ -70,7 +72,7 @@ export const auth = (fullName, email, password, isSignUp) => {
                         fullName: authData.fullName,
                         userType: "USER",
                         user_email: authData.email,
-                        created_on: new Date().getTime() / 1000,
+                        created_on: moment().format('LL'),
                         // updated_on: new Date().getTime() / 1000
                     }
                    

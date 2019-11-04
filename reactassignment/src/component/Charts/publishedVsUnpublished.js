@@ -5,9 +5,7 @@ import {PieChart,Pie,Sector,Cell} from 'recharts'
 // import Pie from '@bit/recharts.recharts.pie';
 // import Sector from '@bit/recharts.recharts.sector';
 import axios from '../../axios-orders';
-const data = [
-	{}
-];
+
 
 const renderActiveShape = (props) => {
 	const RADIAN = Math.PI / 180;
@@ -61,8 +59,8 @@ export default class Example extends PureComponent {
 	state = {
 		activeIndex: 0,
 		allPosts:[],
-		unpublished:[],
-		published:[]
+		unpublished:'',
+		published:''
 
 	};
 
@@ -75,8 +73,8 @@ export default class Example extends PureComponent {
 	componentDidMount(){
 	
 		const allData=[]
-		let publish=[];
-		let unPublish=[];
+		let publish;
+		let unPublish;
 		axios.get('./posts'.json)
 		.then(res=>{
 			
@@ -88,8 +86,13 @@ export default class Example extends PureComponent {
 				}
 				this.setState({allPosts:allData})
 		
-		this.setState({published:allData.filter(post => post.status == 'Published')})
-		this.setState({unpublished:allData.filter(post => post.status == 'Published')})
+		// this.setState({published:allData.filter(post => post.status == 'Published')})
+		// this.setState({unpublished:allData.filter(post => post.status != 'Published')})
+
+		publish=allData.filter(post=>post.status=='Published').length;
+		unPublish=allData.filter(post=>post.status=='Draft').length;
+		this.setState({published:publish})
+		this.setState({unpublished:unPublish})
 
 
 		}
@@ -102,8 +105,8 @@ export default class Example extends PureComponent {
 		
 		
 		const data = [
-			{name: 'Published', value: this.state.published.length},
-			{name:'UnPublished',value:this.state.unpublished.length}
+			{name: 'Published', value: this.state.published},
+			{name:'UnPublished',value:this.state.unpublished}
 		];
 
 

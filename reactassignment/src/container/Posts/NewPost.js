@@ -20,7 +20,7 @@ class NewPost extends Component {
     state = {
         title: '',
         description:'' ,
-       
+       status:'Draft',
         isPublish:false
 
     }
@@ -123,8 +123,8 @@ class NewPost extends Component {
           <Radio
             label='Publish'
             name='radioGroup'
-            value='Publish'
-            checked={this.state.value === 'Publish'}
+            value='Published'
+            checked={this.state.value === 'Published'}
             onChange={this.handleChange}
           />
         </Form.Field>

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import PieChart from '../../component/Charts/autherVsNumberOfPosts';
+//import PieChart from '../../component/Charts/autherVsNumberOfPosts';
 //import DonutChart from '../../component/Charts/publishedVsUnpublished';
 
 
