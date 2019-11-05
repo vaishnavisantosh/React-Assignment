@@ -35,8 +35,8 @@ export const post = (title, description, status,userId,token) => {
             status: status,
             tokenId:userId,
             token:token,
-            createdDate:moment().format('LL'),
-            updatedDate:moment().format('LL')
+            createdDate:moment().format('MM/DD/YYYY'),
+            updatedDate:moment().format('MM/DD/YYYY')
 
         };
         

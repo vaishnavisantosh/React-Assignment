@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import NewPost from './container/Posts/NewPost'
 import Preview from './component/Post/previewPost';
 import Layout from './hoc/Layout/Layout';
-import Charts from './component/Charts/charts';
+//import Charts from './component/Charts/charts';
 import Logout from './container/Auth/Logout/Logout';
 import * as actions from './store/actions/index';
 import Posts from './container/Posts/Posts';
@@ -60,7 +60,7 @@ class App extends Component {
           {isAdmin &&
           <>
           <Route exact path="/app/dashboard" component={DashBoard} />
-          <Route exact path="/app/charts" component={Charts}/>
+          {/* <Route exact path="/app/charts" component={Charts}/> */}
           </>
           }
          <Route  path="/"  component={Home} />

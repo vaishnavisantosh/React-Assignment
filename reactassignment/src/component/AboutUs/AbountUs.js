@@ -8,6 +8,7 @@
     
 
 // export default aboutUs;
+import Chart from '../ContactUs/ContactUs';
 
 import React, { PureComponent } from 'react';
 import {PieChart,Pie,Sector,Cell} from 'recharts'
@@ -126,6 +127,7 @@ export default class Example extends PureComponent {
 
 
 		return (
+            <>
 			<PieChart width={400} height={400}>
 				<Pie
 					activeIndex={this.state.activeIndex}
@@ -140,6 +142,8 @@ export default class Example extends PureComponent {
 					onMouseEnter={this.onPieEnter}
 				/>
 			</PieChart>
+            <Chart/>
+            </>
 		);
 	}
 }

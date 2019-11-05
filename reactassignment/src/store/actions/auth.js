@@ -72,7 +72,7 @@ export const auth = (fullName, email, password, isSignUp) => {
                         fullName: authData.fullName,
                         userType: "USER",
                         user_email: authData.email,
-                        created_on: moment().format('LL'),
+                        created_on: moment().format('MM/DD/YYYY'),
                         // updated_on: new Date().getTime() / 1000
                     }
                    

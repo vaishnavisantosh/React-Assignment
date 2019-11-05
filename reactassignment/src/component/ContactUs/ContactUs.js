@@ -41,7 +41,7 @@ class AuthVsPost extends PureComponent {
 		let manupulatedData=[];
 		try {
          users = await axios.get('/users.json');
-         console.log("usersssss",users);
+        // console.log("usersssss",users);
 			posts= await axios.get('/posts.json').then(res=>{
 			
                 for ( let key in res.data ) {

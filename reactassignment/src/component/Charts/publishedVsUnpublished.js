@@ -1,59 +1,6 @@
 import React, { PureComponent } from 'react';
-import {PieChart,Pie,Sector,Cell} from 'recharts'
-
-// import PieChart from '@bit/recharts.recharts.pie-chart';
-// import Pie from '@bit/recharts.recharts.pie';
-// import Sector from '@bit/recharts.recharts.sector';
+import {PieChart,Pie,Sector} from 'recharts'
 import axios from '../../axios-orders';
-
-
-const renderActiveShape = (props) => {
-	const RADIAN = Math.PI / 180;
-	const {
-		cx, cy, midAngle, innerRadius, outerRadius, startAngle, endAngle,
-		fill, payload, percent, value,
-	} = props;
-	const sin = Math.sin(-RADIAN * midAngle);
-	const cos = Math.cos(-RADIAN * midAngle);
-	const sx = cx + (outerRadius + 10) * cos;
-	const sy = cy + (outerRadius + 10) * sin;
-	const mx = cx + (outerRadius + 30) * cos;
-	const my = cy + (outerRadius + 30) * sin;
-	const ex = mx + (cos >= 0 ? 1 : -1) * 22;
-	const ey = my;
-	const textAnchor = cos >= 0 ? 'start' : 'end';
-
-	return (
-		<g>
-			<text x={cx} y={cy} dy={8} textAnchor="middle" fill={fill}>{payload.name}</text>
-			<Sector
-				cx={cx}
-				cy={cy}
-				innerRadius={innerRadius}
-				outerRadius={outerRadius}
-				startAngle={startAngle}
-				endAngle={endAngle}
-				fill={fill}
-			/>
-			<Sector
-				cx={cx}
-				cy={cy}
-				startAngle={startAngle}
-				endAngle={endAngle}
-				innerRadius={outerRadius + 6}
-				outerRadius={outerRadius + 10}
-				fill={fill}
-			/>
-			<path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} fill="none" />
-			<circle cx={ex} cy={ey} r={2} fill={fill} stroke="none" />
-			<text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} textAnchor={textAnchor} fill="#333">{`PV ${value}`}</text>
-			<text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} dy={18} textAnchor={textAnchor} fill="#999">
-				{`(Rate ${(percent * 100).toFixed(2)}%)`}
-			</text>
-		</g>
-	);
-};
-
 
 export default class Example extends PureComponent {
 	state = {
@@ -62,20 +9,14 @@ export default class Example extends PureComponent {
 		unpublished:'',
 		published:''
 
-	};
+    };
 
-	onPieEnter = (data, index) => {
-		this.setState({
-			activeIndex: index,
-		});
-	};
-
-	componentDidMount(){
+    componentDidMount(){
 	
 		const allData=[]
 		let publish;
 		let unPublish;
-		axios.get('./posts'.json)
+		axios.get('./posts.json')
 		.then(res=>{
 			
                 for ( let key in res.data ) {
@@ -84,10 +25,10 @@ export default class Example extends PureComponent {
                         id: key
                     } );
 				}
-				this.setState({allPosts:allData})
+                this.setState({allPosts:allData})
+                // console.log("all data",this.status.allPosts)
 		
-		// this.setState({published:allData.filter(post => post.status == 'Published')})
-		// this.setState({unpublished:allData.filter(post => post.status != 'Published')})
+		
 
 		publish=allData.filter(post=>post.status=='Published').length;
 		unPublish=allData.filter(post=>post.status=='Draft').length;
@@ -99,6 +40,62 @@ export default class Example extends PureComponent {
 		
 		)
 	}
+    
+     renderActiveShape = (props) => {
+        const RADIAN = Math.PI / 180;
+        const {
+            cx, cy, midAngle, innerRadius, outerRadius, startAngle, endAngle,
+            fill, payload, percent, value,
+        } = props;
+        const sin = Math.sin(-RADIAN * midAngle);
+        const cos = Math.cos(-RADIAN * midAngle);
+        const sx = cx + (outerRadius + 10) * cos;
+        const sy = cy + (outerRadius + 10) * sin;
+        const mx = cx + (outerRadius + 30) * cos;
+        const my = cy + (outerRadius + 30) * sin;
+        const ex = mx + (cos >= 0 ? 1 : -1) * 22;
+        const ey = my;
+        const textAnchor = cos >= 0 ? 'start' : 'end';
+    
+        return (
+            <g>
+                <text x={cx} y={cy} dy={8} textAnchor="middle" fill={fill}>{payload.name}</text>
+                <Sector
+                    cx={cx}
+                    cy={cy}
+                    innerRadius={innerRadius}
+                    outerRadius={outerRadius}
+                    startAngle={startAngle}
+                    endAngle={endAngle}
+                    fill={fill}
+                />
+                <Sector
+                    cx={cx}
+                    cy={cy}
+                    startAngle={startAngle}
+                    endAngle={endAngle}
+                    innerRadius={outerRadius + 6}
+                    outerRadius={outerRadius + 10}
+                    fill={fill}
+                />
+                <path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} fill="none" />
+                <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none" />
+                <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} textAnchor={textAnchor} fill="#333">{`PV ${value}`}</text>
+                <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} dy={18} textAnchor={textAnchor} fill="#999">
+                    {`(Rate ${(percent * 100).toFixed(2)}%)`}
+                </text>
+            </g>
+        );
+    };
+    
+
+	onPieEnter = (data, index) => {
+		this.setState({
+			activeIndex: index,
+		});
+	};
+
+	
 
 
 	render() {
@@ -107,14 +104,17 @@ export default class Example extends PureComponent {
 		const data = [
 			{name: 'Published', value: this.state.published},
 			{name:'UnPublished',value:this.state.unpublished}
-		];
+        ];
+        
+        console.log("data",data);
 
 
 		return (
+            
 			<PieChart width={400} height={400}>
 				<Pie
 					activeIndex={this.state.activeIndex}
-					activeShape={renderActiveShape}
+					activeShape={this.renderActiveShape}
 					data={data}
 					cx={200}
 					cy={200}
@@ -125,6 +125,8 @@ export default class Example extends PureComponent {
 					onMouseEnter={this.onPieEnter}
 				/>
 			</PieChart>
+
+        
 		);
 	}
 }

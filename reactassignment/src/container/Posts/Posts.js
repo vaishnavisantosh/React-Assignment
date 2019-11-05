@@ -9,6 +9,9 @@ import axios from '../../axios-orders';
 import * as actions from '../../store/actions/index';
 import Spinner from '../../component/UI/Spinner/Spinner';
 import ErrorBoundry from '../../hoc/ErrorBoundary/ErrorBoundary';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+let moment=require('moment');
 
 class Posts extends Component {
 
@@ -17,7 +20,9 @@ class Posts extends Component {
     currentPage: 1,
     totalPages: 0,
     recordsPerPage: 3,
-    allPost:[]
+    allPost:[],
+    startDate:new Date(),
+    endDate:new Date()
   };
 
   componentDidMount() {
@@ -99,6 +104,28 @@ class Posts extends Component {
     this.setState({ posts: arr, currentPage: activePage });
   }
 
+  handleStartDateChange = date => {
+    this.setState({
+      startDate: date
+    });
+  };
+
+  handleEndDateChange = date => {
+    this.setState({
+      endDate: date
+    });
+  };
+
+  filterByDate=()=>{
+    let filteredArr=[];
+
+    filteredArr=this.state.allPost.filter(post=>moment(post.createdDate).isBetween(this.state.startDate,this.state.endDate))
+
+    this.setState({posts:filteredArr})
+
+    console.log(filteredArr);
+
+  }
   render() {
     let arr = [];
     const { posts } = this.state;
@@ -126,6 +153,8 @@ class Posts extends Component {
         table =
         <>
           <Table compact celled definition>
+
+
             <Table.Header>
               <Table.Row>
 
@@ -213,8 +242,22 @@ class Posts extends Component {
       // console.log(this.props.posts)
       <>
       <div>
-        <Button floated='right' icon labelPosition='left' primary size='small' onClick={() => this.goToCraectePage()}>
+        <Button floated='right' icon labelPosition='left' primary size='small' onClick={() =>this.goToCraectePage()}>
           Add Post
+      </Button>
+
+      <DatePicker
+        selected={this.state.startDate}
+        onChange={this.handleStartDateChange}
+      />
+
+<DatePicker
+        selected={this.state.endDate}
+        onChange={this.handleEndDateChange}
+      />
+
+<Button icon labelPosition='left' primary size='small' onClick={() =>this.filterByDate()}>
+          Filter
       </Button>
         <ErrorBoundry>
           {table}
