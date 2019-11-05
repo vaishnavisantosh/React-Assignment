@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
 import { withRouter } from 'react-router-dom';
 import { Table, Button } from 'semantic-ui-react';
 import Pagination from '../../component/UI/Pagination/Pagination';
@@ -33,10 +32,7 @@ class Posts extends Component {
     if (localStorage.getItem('userType')==='admin') {
       axios.get('/posts.json')
         .then(res => {
-        //   //console.log("get of admin successful", res.data)
-        //   //console.log(Object.keys(res.data))
-        // const arr=Object.entries(res.data).map(([key, value]) => ({key,value}))
-        //   
+        
         const fetchedOrders = [];
                 for ( let key in res.data ) {
                     fetchedOrders.push( {
@@ -67,17 +63,58 @@ class Posts extends Component {
 
 
     axios.delete(`/posts/${id}.json`)
-        .then(response => {
-            const userId = this.props.userId;
-            const tokenId = localStorage.getItem('token');
+        .then( axios.get('/posts.json')
+        .then(res => {
+        
+        const fetchedOrders = [];
+                for ( let key in res.data ) {
+                    fetchedOrders.push( {
+                        ...res.data[key],
+                        id: key
+                    } );
+                }
+                this.setState({ posts: fetchedOrders.slice(0,this.state.recordsPerPage),allPost:fetchedOrders })
+                this.setState({ totalPages: Math.ceil(fetchedOrders.length / this.state.recordsPerPage) });
 
-            this.props.onFetchPost(userId, tokenId).then(response=>{
-              this.setState({posts:response,allPost:response})
-            }
-              
-            )
-            console.log("inside delete")
+
+          console.log("this state posts",this.state.posts)
         })
+      
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        //   response => {
+        //     const userId = this.props.userId;
+        //     const tokenId = localStorage.getItem('token');
+
+        //     this.props.onFetchPost(userId, tokenId).then(response=>{
+        //       this.setState({posts:response,allPost:response})
+        //     }
+              
+        //     )
+        //     console.log("inside delete")
+        // }
+        )
 
 }
 
@@ -101,6 +138,8 @@ class Posts extends Component {
     const fromIndex = (activePage - 1) ? ((activePage - 1) * recordsPerPage) : 0;
     const tillIndex = activePage * recordsPerPage;
     const arr = this.state.allPost.slice(fromIndex, tillIndex);
+    //this.setState({ totalPages: Math.ceil(this.state.allPost.length / this.state.recordsPerPage) });
+
     this.setState({ posts: arr, currentPage: activePage });
   }
 
@@ -121,9 +160,23 @@ class Posts extends Component {
 
     filteredArr=this.state.allPost.filter(post=>moment(post.createdDate).isBetween(this.state.startDate,this.state.endDate))
 
-    this.setState({posts:filteredArr})
+    this.setState({allPost:filteredArr})
+    this.setState({ posts: this.state.allPost.slice(0,this.state.recordsPerPage)})
+    this.setState({ totalPages: Math.ceil(this.state.allPost.length / this.state.recordsPerPage) });
+
+    
 
     console.log(filteredArr);
+
+  }
+
+  sortByDate=()=>{
+    let sortedArray=[];
+    sortedArray=this.state.allPost.sort((a,b) => new moment(a.createdDate).format('YYYYMMDD') - new moment(b.createdDate).format('YYYYMMDD'));
+    console.log("sorted array",sortedArray);
+    this.setState({allPost:sortedArray})
+    this.setState({ posts: this.state.allPost.slice(0,this.state.recordsPerPage)})
+    this.setState({ totalPages: Math.ceil(this.state.allPost.length / this.state.recordsPerPage) });
 
   }
   render() {
@@ -220,7 +273,7 @@ class Posts extends Component {
                     createdDate={order.createdDate}
                     updatedDate={order.updatedDate}
                     id={order.id}
-                    handleDelete={this.handleConfirm}
+                   
                     handleEdit={this.goToCraectePage}
                     handlePreview={this.goToPreviewPage}
                   />
@@ -259,6 +312,14 @@ class Posts extends Component {
 <Button icon labelPosition='left' primary size='small' onClick={() =>this.filterByDate()}>
           Filter
       </Button>
+
+      <Button icon labelPosition='left' primary size='small' onClick={()=>this.sortByDate()}>
+            sort by created date
+      </Button>
+
+
+
+
         <ErrorBoundry>
           {table}
           <Pagination

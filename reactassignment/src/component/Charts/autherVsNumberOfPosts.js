@@ -50,13 +50,17 @@ class AuthVsPost extends PureComponent {
 		}
 
 
-		//return { users, posts }
+	// 	//return { users, posts }
 
-	}
+	 }
 
 	componentDidMount() {
 
 		this.getAllChartData();
+	
+
+
+	
 
 	}
 

@@ -33,27 +33,30 @@ class PreviewPost extends Component {
         let Post =
             <>
                 <Form onSubmit={this.submitHandlerForEdit}>
-                    <Form.Input
+                  Title:  <Form.Input
                         fluid
                         placeholder='Title'
                         value={title}
                         name="title"
                     />
+                  
                     <div>
-                        {ReactHtmlParser(description)}
+                    Description:   {ReactHtmlParser(description)}
                     </div>
+                   <br></br>
+                    Status:
                     <Form.Input
                         fluid
                         placeholder='status'
                         value={status}
                     />
-
+                    Created Date:
                     <Form.Input
                         fluid
                         placeholder='created Date'
                         value={createdDate}
                     />
-
+                    Updated Date:
                     <Form.Input
                         fluid
                         placeholder='Updated date'

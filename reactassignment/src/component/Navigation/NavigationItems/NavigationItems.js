@@ -58,11 +58,11 @@ const navigationItems = (props) => {
     
             { isApp && props.isAuthenticated ?
                 <>
-                {/* <Menu.Item
+                <Menu.Item
                     name='home'
                     as={Link} to="/"
                    
-                /> */}
+                />
                 <Menu.Item
                     name='POSTS'
                     as={Link} to="/app/posts"
