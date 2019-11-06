@@ -11,7 +11,7 @@ import ErrorBoundry from '../../hoc/ErrorBoundary/ErrorBoundary';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 let moment=require('moment');
-
+//import * as moment from "moment";
 class Posts extends Component {
 
   state = {

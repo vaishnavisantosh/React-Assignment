@@ -1,8 +1,8 @@
 import axios from '../../axios-orders';
 
 import * as actionTypes from './actionTypes';
-
-var moment = require('moment');
+import * as moment from "moment";
+//var moment = require('moment');
 
 export const orderStart = () => {
     return {

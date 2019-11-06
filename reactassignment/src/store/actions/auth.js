@@ -1,8 +1,8 @@
 import axios from 'axios';
 import * as actionTypes from './actionTypes';
+import * as moment from "moment";
 
-
-var moment=require('moment');
+//var moment=require('moment');
 
 export const authStart = () => {
     return {

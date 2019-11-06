@@ -12,8 +12,8 @@ import 'froala-editor/css/froala_style.min.css';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import FroalaEditor from 'react-froala-wysiwyg';
 import Axios from '../../axios-orders';
-
-var moment = require('moment');
+import * as moment from "moment";
+//var moment = require('moment');
 
 class NewPost extends Component {
 

@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Button, Form } from 'semantic-ui-react';
 import Axios from '../../axios-orders';
 
-var moment = require('moment');
+//var moment = require('moment');
 
 class PreviewPost extends Component {
     state = {

@@ -1,20 +1,16 @@
-import React, { Component } from 'react';
+import React, { useState,useEffect } from 'react';
 import axios from '../../axios-orders';
 import { Menu } from 'semantic-ui-react';
 import { Route,Link } from 'react-router-dom';
 import PublicPost from '../../component/Post/PublicPosts';
 
-class Home extends Component {
-constructor(){
-    super();
-   this.state = {
-        allPosts: [],
-        publishedPost: []
+const Home =(props)=> {
 
-    }
-}
+    //const[allposts,setAllposts]=useState([]);
+    const[publishedPost,setPublishedPost]=useState([]);
 
-    componentDidMount() {
+
+    useEffect(() =>{
         axios.get('/posts.json')
             .then(res => {
 
@@ -25,15 +21,15 @@ constructor(){
                         id: key
                     });
                 }
-                this.setState({ allPosts: fetchedOrders })
+              //  setAllposts({fetchedOrders})
                 let arr = [];
                 arr = fetchedOrders.filter(post => post.status === 'Published');
-                this.setState({ publishedPost: arr });
+                setPublishedPost({arr})
             })
 
-    }
+    },[]);
 
-    render() {
+
 
 
         return (
@@ -41,7 +37,7 @@ constructor(){
 
             <Menu>
                 {
-                    this.state.publishedPost.map(param => (
+                    publishedPost.map(param => (
 
                         <Menu.Item
                             name={param.title}
@@ -54,7 +50,7 @@ constructor(){
         );
 
     }
-}
+
 
 
 
