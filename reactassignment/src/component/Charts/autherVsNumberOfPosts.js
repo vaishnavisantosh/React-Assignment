@@ -80,6 +80,7 @@ class AuthVsPost extends PureComponent {
 	};
 
 	render() {
+		console.log("inside authVsPost");
 
 
 		return (

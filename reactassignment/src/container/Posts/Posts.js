@@ -25,6 +25,8 @@ class Posts extends Component {
   };
 
   componentDidMount() {
+    console.log("posts container called");
+
 
     const userId = this.props.userId;
     const tokenId = localStorage.getItem('token');
@@ -180,10 +182,11 @@ class Posts extends Component {
 
   }
   render() {
+
     let arr = [];
     const { posts } = this.state;
     const userId = this.props.userId;
-    console.log("inside container");
+    console.log("inside posts container");
     console.log(this.props)
 
     //console.log(this.props.post

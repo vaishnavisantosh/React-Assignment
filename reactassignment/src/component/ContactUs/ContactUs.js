@@ -3,7 +3,9 @@ import React from 'react';
 //import PublishVSUnpublish from '../Charts/publishedVsUnpublished';
 
 const contactUs=(props)=>(
+   
    <>
+   
    contact Us page
    </>
 );

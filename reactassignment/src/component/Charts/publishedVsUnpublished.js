@@ -30,8 +30,8 @@ export default class Example extends PureComponent {
 		
 		
 
-		publish=allData.filter(post=>post.status=='Published').length;
-		unPublish=allData.filter(post=>post.status=='Draft').length;
+		publish=allData.filter(post=>post.status==='Published').length;
+		unPublish=allData.filter(post=>post.status==='Draft').length;
 		this.setState({published:publish})
 		this.setState({unpublished:unPublish})
 
@@ -99,7 +99,7 @@ export default class Example extends PureComponent {
 
 
 	render() {
-		
+		console.log("inside publishVsunpublish");
 		
 		const data = [
 			{name: 'Published', value: this.state.published},

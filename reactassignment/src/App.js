@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
+import React, { Component, Suspense } from 'react';
+import { Route, Switch, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import NewPost from './container/Posts/NewPost'
 import Preview from './component/Post/previewPost';
@@ -8,66 +8,73 @@ import Charts from './component/Charts/charts';
 import Logout from './container/Auth/Logout/Logout';
 import * as actions from './store/actions/index';
 import Posts from './container/Posts/Posts';
-import Auth from './container/Auth/Auth';
+//import Auth from './container/Auth/Auth';
 import AboutUs from './component/AboutUs/AbountUs';
 import ContactUs from './component/ContactUs/ContactUs';
 import NotFound from './component/404/NotFound';
 import DashBoard from './container/DashBoard/Dashboard'
 import Home from './container/Home/Home';
 
+
+const Auth = React.lazy(() => { return import('./container/Auth/Auth') });
+//const Posts = React.lazy(() => { return import('./container/Posts/Posts') });
+
 class App extends Component {
-  componentDidMount () {
+  componentDidMount() {
     this.props.onTryAutoSignup();
   }
 
-  render () {
+  render() {
     let username;
     let isAdmin;
     let routes = (
       <Switch>
-        <Route path="/auth" exact component={Auth} />
+        <Route path="/auth" exact render={() => <Auth />} />
         <Route path="/aboutUs" exact component={AboutUs} />
         <Route path="/contactUs" exact component={ContactUs} />
-       
-        <Route  path="/"  component={Home} />
-        
-        <Route  component={NotFound}/>
+
+        <Route path="/" component={Home} />
+
+        <Route component={NotFound} />
         {/* <Redirect to="/" /> */}
       </Switch>
     );
 
-    if ( this.props.isAuthenticated ) {
-    let  userType=localStorage.getItem('useType');
-      if(userType=='admin'){
-        isAdmin=true
+    if (this.props.isAuthenticated) {
+      let userType = localStorage.getItem('useType');
+      if (userType === 'admin') {
+        isAdmin = true
       }
-      else{
-        isAdmin=false
+      else {
+        isAdmin = false
       }
-      
-      
+
+
       //console.log(userId);
       routes = (
         <Switch>
           <Route path="/logout" component={Logout} />
-          <Route path="/auth" component={Auth} />
-          <Route path="/app/preview/:id" component={Preview}/>
-          <Route path="/app/posts/:id"  component={NewPost}/>
-          <Route path="/app/posts" component={Posts} />} />
+          <Route path="/auth" render={() => <Auth />} />
+          <Route path="/app/preview/:id" component={Preview} />
+          <Route path="/app/posts/:id" component={NewPost} />
+          {/* <Route path="/app/posts" render={() => <Posts />} />} /> */}
+          <Route path="/app/posts" component={Posts} />
+
           <Route exact path="/aboutUs" exact component={AboutUs} />
-          <Route exact path="/app/charts" component={Charts}/>
+          <Route exact path="/app/charts" component={Charts} />
+          <Route exact path="/app/dashboard" component={DashBoard} />
 
           {/* <Route exact path="/contactUs" component={ContactUs}></Route> */}
 
           {isAdmin &&
-          <>
-          <Route exact path="/app/dashboard" component={DashBoard} />
-          <Route exact path="/app/charts" component={Charts}/>
-          </>
+            <>
+              <Route exact path="/app/dashboard" component={DashBoard} />
+              <Route exact path="/app/charts" component={Charts} />
+            </>
           }
-         <Route  path="/"  component={Home} />
-          <Route  component={NotFound}/>
-          
+          <Route path="/" component={Home} />
+          <Route component={NotFound} />
+
         </Switch>
       );
     }
@@ -75,8 +82,11 @@ class App extends Component {
     return (
       <div>
         <Layout  >
-
+          <Suspense fallback={<p>Loading................!!</p>}>
           {routes}
+          </Suspense>
+        
+
         </Layout>
       </div>
     );
@@ -91,8 +101,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onTryAutoSignup: () => dispatch( actions.authCheckState() )
+    onTryAutoSignup: () => dispatch(actions.authCheckState())
   };
 };
 
-export default withRouter( connect( mapStateToProps, mapDispatchToProps )( App ) );
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

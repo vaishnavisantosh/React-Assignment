@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Form, Grid, Header, Message, Segment } from 'semantic-ui-react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Redirect,withRouter } from 'react-router-dom';
 import Spinner from '../../component/UI/Spinner/Spinner';
 import * as actions from '../../store/actions/index';
 import Validator from "validatorjs";
@@ -33,7 +33,7 @@ class Auth extends Component {
     if (!this.validate()) {
      
       this.props.onAuth(this.state.form.fullName, this.state.form.email, this.state.form.password, this.state.isSignUp).then(res=>{
-        if(localStorage.getItem('userType')=='admin'){
+        if(localStorage.getItem('userType')==='admin'){
           this.props.history.push("/app/dashboard");
         }
         else{
@@ -99,6 +99,9 @@ class Auth extends Component {
   }
 
   render() {
+
+
+    console.log("Auth container get called");
     let validationMessages = this.getValidationMessages();
 
     let authRedirect = null;
@@ -213,4 +216,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Auth);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Auth));

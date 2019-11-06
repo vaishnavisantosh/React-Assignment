@@ -27,7 +27,7 @@ constructor(){
                 }
                 this.setState({ allPosts: fetchedOrders })
                 let arr = [];
-                arr = fetchedOrders.filter(post => post.status == 'Published');
+                arr = fetchedOrders.filter(post => post.status === 'Published');
                 this.setState({ publishedPost: arr });
             })
 

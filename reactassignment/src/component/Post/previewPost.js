@@ -27,6 +27,7 @@ class PreviewPost extends Component {
     }
 
     render() {
+        console.log("inside preview component");
 
         let { title, description, status, createdDate, updatedDate } = this.state;
 
