@@ -7,7 +7,7 @@ import PublicPost from '../../component/Post/PublicPosts';
 const Home =(props)=> {
 
     //const[allposts,setAllposts]=useState([]);
-    const[publishedPost,setPublishedPost]=useState([]);
+    const[publishedPost,setpublishedPost]=useState([]);
 
 
     useEffect(() =>{
@@ -24,7 +24,8 @@ const Home =(props)=> {
               //  setAllposts({fetchedOrders})
                 let arr = [];
                 arr = fetchedOrders.filter(post => post.status === 'Published');
-                setPublishedPost({arr})
+                setpublishedPost(arr)
+                console.log(publishedPost);
             })
 
     },[]);
@@ -47,7 +48,7 @@ const Home =(props)=> {
             </Menu>
                 <Route path="/posts/:id" component={PublicPost}/>
             </>
-        );
+        )
 
     }
 

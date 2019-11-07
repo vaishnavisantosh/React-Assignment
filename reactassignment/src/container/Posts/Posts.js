@@ -12,13 +12,13 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 let moment=require('moment');
 //import * as moment from "moment";
+const recordsPerPage=3;
 class Posts extends Component {
 
   state = {
     posts: [],
     currentPage: 1,
     totalPages: 0,
-    recordsPerPage: 3,
     allPost:[],
     startDate:new Date(),
     endDate:new Date()
@@ -42,8 +42,8 @@ class Posts extends Component {
                         id: key
                     } );
                 }
-                this.setState({ posts: fetchedOrders.slice(0,this.state.recordsPerPage),allPost:fetchedOrders })
-                this.setState({ totalPages: Math.ceil(fetchedOrders.length / this.state.recordsPerPage) });
+                this.setState({ posts: fetchedOrders.slice(0,recordsPerPage),allPost:fetchedOrders })
+                this.setState({ totalPages: Math.ceil(fetchedOrders.length / recordsPerPage) });
 
 
           console.log("this state posts",this.state.posts)
@@ -52,8 +52,8 @@ class Posts extends Component {
     }
     else {
       this.props.onFetchPost(userId, tokenId).then((res) => {
-        this.setState({ posts: res.slice(0, this.state.recordsPerPage),allPost:res })
-        this.setState({ totalPages: Math.ceil(res.length / this.state.recordsPerPage) });
+        this.setState({ posts: res.slice(0,recordsPerPage),allPost:res })
+        this.setState({ totalPages: Math.ceil(res.length / recordsPerPage) });
         console.log("this state posts",this.state.posts)
       });
     }
@@ -75,48 +75,12 @@ class Posts extends Component {
                         id: key
                     } );
                 }
-                this.setState({ posts: fetchedOrders.slice(0,this.state.recordsPerPage),allPost:fetchedOrders })
-                this.setState({ totalPages: Math.ceil(fetchedOrders.length / this.state.recordsPerPage) });
+                this.setState({ posts: fetchedOrders.slice(0,recordsPerPage),allPost:fetchedOrders })
+                this.setState({ totalPages: Math.ceil(fetchedOrders.length / recordsPerPage) });
 
 
           console.log("this state posts",this.state.posts)
-        })
-      
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-        //   response => {
-        //     const userId = this.props.userId;
-        //     const tokenId = localStorage.getItem('token');
-
-        //     this.props.onFetchPost(userId, tokenId).then(response=>{
-        //       this.setState({posts:response,allPost:response})
-        //     }
-              
-        //     )
-        //     console.log("inside delete")
-        // }
-        )
+        }) )
 
 }
 
@@ -136,7 +100,7 @@ class Posts extends Component {
   onPageChange = ({ activePage }) => {
 
     console.log("activePage", activePage)
-    const { recordsPerPage } = this.state;
+    //const { recordsPerPage } = this.state;
     const fromIndex = (activePage - 1) ? ((activePage - 1) * recordsPerPage) : 0;
     const tillIndex = activePage * recordsPerPage;
     const arr = this.state.allPost.slice(fromIndex, tillIndex);
@@ -163,8 +127,8 @@ class Posts extends Component {
     filteredArr=this.state.allPost.filter(post=>moment(post.createdDate).isBetween(this.state.startDate,this.state.endDate))
 
     this.setState({allPost:filteredArr})
-    this.setState({ posts: this.state.allPost.slice(0,this.state.recordsPerPage)})
-    this.setState({ totalPages: Math.ceil(this.state.allPost.length / this.state.recordsPerPage) });
+    this.setState({ posts: this.state.allPost.slice(0,recordsPerPage)})
+    this.setState({ totalPages: Math.ceil(this.state.allPost.length / recordsPerPage) });
 
     
 
@@ -177,8 +141,8 @@ class Posts extends Component {
     sortedArray=this.state.allPost.sort((a,b) => new moment(a.createdDate).format('YYYYMMDD') - new moment(b.createdDate).format('YYYYMMDD'));
     console.log("sorted array",sortedArray);
     this.setState({allPost:sortedArray})
-    this.setState({ posts: this.state.allPost.slice(0,this.state.recordsPerPage)})
-    this.setState({ totalPages: Math.ceil(this.state.allPost.length / this.state.recordsPerPage) });
+    this.setState({ posts: this.state.allPost.slice(0,recordsPerPage)})
+    this.setState({ totalPages: Math.ceil(this.state.allPost.length / recordsPerPage) });
 
   }
   render() {

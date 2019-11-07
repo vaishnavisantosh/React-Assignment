@@ -1,19 +1,23 @@
-import React from 'react';
+import React,{useRef} from 'react';
 import {withRouter} from 'react-router-dom'
 import { Menu } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
 
-const navigationItems = (props) => {
+const NavigationItems = (props) => {
     const isApp = props.location.pathname.includes('/app');
     
-   
+    const menu = useRef();
+   // focusTextInput = () => menu.current
     console.log('props', props);
-
+    const onButtonClick = () => {
+        // `current` points to the mounted text input element
+        menu.current.focus();
+      };
    
     const isAdmin = localStorage.getItem('userType') === 'admin';
     console.log('isAdmin', isAdmin)
-    return (<Menu>
+    return (<Menu> 
         {!isApp &&
             <>
             {props.isAuthenticated ?
@@ -23,6 +27,9 @@ const navigationItems = (props) => {
                 <Menu.Item
                     name='home'
                     as={Link} to="/"
+                    ref={menu}
+                    onClick={onButtonClick}
+                   
                     
                 /> 
                 </>
@@ -41,11 +48,17 @@ const navigationItems = (props) => {
                 name='ABOUT US'
                 as={Link} to="/aboutUs"
                 exact
+                ref={menu}
+                onClick={onButtonClick}
+               
             />
             <Menu.Item
                 name='CONTACT US'
                 as={Link} to="/contactUs"
                 exact
+                ref={menu}
+                onClick={onButtonClick}
+               
             />
             <Menu.Item
                     name='home'
@@ -97,4 +110,4 @@ const navigationItems = (props) => {
             }
 
 
-export default withRouter( navigationItems);
+export default withRouter( NavigationItems);

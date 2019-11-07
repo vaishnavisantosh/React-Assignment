@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from 'react';
+import React, { useEffect,useState,useRef,useMemo } from 'react';
 import axios from '../../axios-orders';
 import { Card, Icon, Image } from 'semantic-ui-react'
 import ReactHtmlParser from 'react-html-parser';
@@ -10,7 +10,7 @@ const PublicPosts =(props)=> {
     const[description,setdescription]=useState("")
     const[publishedDate,setpublishedDate]=useState("")
 
-    
+    const focusPost=useRef();
 
     
     useEffect(()=>{
@@ -28,10 +28,11 @@ const PublicPosts =(props)=> {
 
     
         let card =
-            <Card>
+            <Card >
                 <Image src='https://react.semantic-ui.com/images/avatar/large/matthew.png' wrapped ui={false} />
                 <Card.Content>
-                    <Card.Header>{title}</Card.Header>
+                    <Card.Header>
+                    {title}</Card.Header>
                     <Card.Meta>
                         <span className='date'>{publishedDate}</span>
                     </Card.Meta>

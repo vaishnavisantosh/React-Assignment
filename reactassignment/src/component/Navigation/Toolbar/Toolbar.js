@@ -1,14 +1,20 @@
-import React from 'react';
+import React,{useRef} from 'react';
 import classes from './Toolbar.css';
 import NavigationItems from '../NavigationItems/NavigationItems';
 
-const toolbar = ( props ) => (
-    <header className={classes.Toolbar}>
+const Toolbar = ( props ) => {
+
+   
+
+ return(
+ <header className={classes.Toolbar}>
         
         <nav className={classes.DesktopOnly}>
-            <NavigationItems isAuthenticated={props.isAuth} />
+            <NavigationItems isAuthenticated={props.isAuth}
+            
+            />
         </nav>
-    </header>
-);
+    </header>)
+};
 
-export default toolbar;
+export default Toolbar;
