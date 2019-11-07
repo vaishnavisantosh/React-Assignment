@@ -7,18 +7,18 @@ import Layout from './hoc/Layout/Layout';
 import Charts from './component/Charts/charts';
 import Logout from './container/Auth/Logout/Logout';
 import * as actions from './store/actions/index';
-//import Posts from './container/Posts/Posts';
-//import Auth from './container/Auth/Auth';
+
 import AboutUs from './component/AboutUs/AbountUs';
 import ContactUs from './component/ContactUs/ContactUs';
 import NotFound from './component/404/NotFound';
 import DashBoard from './container/DashBoard/Dashboard'
-import Home from './container/Home/Home';
-import { resolve } from 'dns';
+
 
 
 const Auth = React.lazy(() => { return new Promise(resolve =>{setTimeout(()=>resolve( import('./container/Auth/Auth')),1000); })});
 const Posts = React.lazy(() => { return new Promise(resolve =>{setTimeout(()=>resolve( import('./container/Posts/Posts')),1000); })});
+const Home=React.lazy(() => { return new Promise(resolve =>{setTimeout(()=>resolve( import('./container/Home/Home')),1000); })});
+
 
 class App extends Component {
   componentDidMount() {
@@ -34,7 +34,7 @@ class App extends Component {
         <Route path="/aboutUs" exact component={AboutUs} />
         <Route path="/contactUs" exact component={ContactUs} />
 
-        <Route path="/" component={Home} />
+        <Route path="/" render={()=><Home/>} />
 
         <Route component={NotFound} />
         {/* <Redirect to="/" /> */}
